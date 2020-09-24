@@ -6,7 +6,7 @@
 require './maps.rb'
 require 'colorize'
 class Van < Map
-
+    #Initialises the map
     def initialize
         @name='van'
         @map=[
@@ -21,7 +21,17 @@ class Van < Map
         @pos_x = 2
         @pos_y = 2
         @player_icon=super(@name,@map,@pos_x,@pos_y)
+    end
+
+    #Extends the Map class move direction
+    def move(direction)
+        if direction == 'right' #If exiting the van, load the next map
+            if @map[@pos_x][@pos_y + 1] == 'E'
+                LittleRoot.new.begin
+            end
         end
+        super #Otherwise, do the normal Map move function
+    end
 end
 
 class LittleRoot < Map
@@ -54,4 +64,4 @@ class LittleRoot < Map
     @player_icon=super(@name,@map,@pos_x,@pos_y)
     end
 end
-LittleRoot.new.begin
+Van.new.begin

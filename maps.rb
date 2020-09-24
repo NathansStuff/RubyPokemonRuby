@@ -1,6 +1,7 @@
 require 'colorize'
 
 class Map
+
     def initialize(name, map, pos_x, pos_y)
     @name=name
     @map=map
@@ -13,6 +14,7 @@ class Map
     @map[@pos_x][@pos_y]=@player_icon
     end
 
+    #Clears terminal, prints map according to characters
     def print_map
         system('clear')
         for row in @map
@@ -21,7 +23,7 @@ class Map
                 when '`'
                     print '─'.colorize(:light_blue)
                 when '|'
-                    print '|'.colorize(:light_blue)
+                    print '│'.colorize(:light_blue)
                 when '1'
                     print '┌'.colorize(:light_blue)
                 when '2'
@@ -34,39 +36,74 @@ class Map
                     print '█'.colorize(:red)
                 when 'S'
                     print '█'.colorize(:light_black)
+                when 'T'
+                    print '█'.colorize(:green)
                 when 'X'
                     print 'X'.colorize(:blue)
+                when 'H'
+                    print '█'.colorize(:light_magenta)
+                when 'I'
+                    print '█'.colorize(:cyan)
+                when 'E'
+                    print ' '
+                when 'D'
+                    print ' '
                 end
+
             end
             puts ''
         end
     end
 
+    #Adjusts player position
     def move(direction)
-        #Uses direction from input to check if there is a valid spot to move to. 
-        #If yes, updates old x/y to current spot, puts the saved variable in that spot (aka, recreating the original map)
-        #Then updates x/y position to spot moved to, updates map to represent player at that spot.
+        #Sets current map spot equal to saved varibale (recreates the original map)
         @old_x = @pos_x
         @old_y = @pos_y
         @map[@old_x][@old_y] = @saved_variable
-        if direction == 'up' && (@map[@pos_x - 1][@pos_y] == 'R' && @map[@pos_x - 1][@pos_y] != 'T')
-            @pos_x -=1
-        elsif direction == 'down'&& (@map[@pos_x + 1][@pos_y] != 'R' && @map[@pos_x + 1][@pos_y] != 'T')
-            @pos_x +=1
-        elsif direction == 'left'&& (@map[@pos_x][@pos_y - 1] != 'R' && @map[@pos_x][@pos_y - 1] != 'T')
-            @pos_y -=1
-        elsif direction == 'right'&& (@map[@pos_x][@pos_y + 1] != 'R' && @map[@pos_x][@pos_y + 1] != 'T')
-            @pos_y +=1
+
+        #Checks the direction headed and sees if valid
+        #If valid, moves there
+        case direction 
+        when 'up'
+            case @map[@pos_x - 1][@pos_y]
+            when 'S'
+                @pos_x -= 1
+            when 'E'
+                exit!
+            end
+        when 'down'
+            case @map[@pos_x + 1][@pos_y]
+            when 'S'
+                @pos_x += 1
+            when 'E'
+                exit!
+            end
+        when 'left'
+            case @map[@pos_x][@pos_y - 1]
+            when 'S'
+                @pos_y -= 1
+            when 'E'
+                exit!
+            end
+        when 'right'
+            case @map[@pos_x][@pos_y + 1]
+            when 'S'
+                @pos_y += 1
+            when 'E'
+                exit!
+            end
         end
-    
+        
+        #Places the player's icon on the map
         @map[@pos_x][@pos_y] = @player_icon
-        system("clear")
         print_map
     end
 
+    #Get user input
     def input
         loop do
-            #case STDIN.getch.upcase!
+            # case STDIN.getch.upcase!
             case gets.chomp.upcase!
             when 'A' then move('left')
             when 'S' then move('down')
@@ -76,19 +113,13 @@ class Map
         end
     end
 
+    #Main loop
+    def begin
+        print_map
+        input
+    end
+
 end
-
-van = Map.new('van',[
-        ['1','`','`','`','`','`','2',],
-        ['|','R','R','R','R','S','|',],
-        ['|','R','S','S','S','S','E',],
-        ['|','R','S','S','S','S','E',],
-        ['|','R','R','R','S','S','E',],
-        ['|','R','R','R','R','S','|',],
-        ['3','`','`','`','`','`','4',]
-    ],2,2)
-
-van.input
 
 
 

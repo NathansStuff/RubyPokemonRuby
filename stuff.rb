@@ -32,7 +32,7 @@ end
 
 def slowly(str)
     str.each_char do |c|
-        sleep 0.1
+        sleep 0.01
         print c
     end
     gets

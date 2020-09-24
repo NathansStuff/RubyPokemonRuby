@@ -10,7 +10,6 @@ class Map
     @old_x=0
     @old_y=0
     @player_icon='X'
-    @saved_variable=@map[@pos_x][@pos_y]
     @map[@pos_x][@pos_y]=@player_icon
     end
 
@@ -48,13 +47,18 @@ class Map
                     print ' '
                 when 'D'
                     print ' '
+                when 'C'
+                    print '█'.colorize(:white)
+                when 'O'
+                    print 'O'.colorize(:blue)
+                when 'P'
+                    print 'P'.colorize(:blue)
                 end
-
             end
             puts ''
         end
     end
-
+    
     #Adjusts player position
     def move(direction)
         #Sets current map spot equal to saved varibale (recreates the original map)
@@ -68,6 +72,7 @@ class Map
         when 'up'
             case @map[@pos_x - 1][@pos_y]
             when 'S'
+                @saved_variable = 'S'
                 @pos_x -= 1
             when 'E'
                 exit!
@@ -75,6 +80,7 @@ class Map
         when 'down'
             case @map[@pos_x + 1][@pos_y]
             when 'S'
+                @saved_variable = 'S'
                 @pos_x += 1
             when 'E'
                 exit!
@@ -82,6 +88,7 @@ class Map
         when 'left'
             case @map[@pos_x][@pos_y - 1]
             when 'S'
+                @saved_variable = 'S'
                 @pos_y -= 1
             when 'E'
                 exit!
@@ -89,6 +96,7 @@ class Map
         when 'right'
             case @map[@pos_x][@pos_y + 1]
             when 'S'
+                @saved_variable = 'S'
                 @pos_y += 1
             when 'E'
                 exit!

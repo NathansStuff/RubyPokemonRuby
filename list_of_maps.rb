@@ -80,10 +80,12 @@ class LittleRoot < Map
             @map[8][8] = 'O'
             sleep 1
             print_map
-            slowly("MOM: Name, we're here, honey!")
+            slowly("MOM: #{$player.name}, we're here, honey!")
             slowly("It must be tiring riding with our things in the moving truck")
+            reset_map
             slowly("Well, this is LITTLEROOT TOWN.")
             slowly("How do you like it? This is our new home!")
+            reset_map
             slowly("It has a quaint feel, but it seems to be an easy place to live, don't you think?")
             slowly("And, you get your own room, Name! Let's go inside.")
             @map[7][8] = 'O'
@@ -95,6 +97,7 @@ class LittleRoot < Map
             @map[8][8] = 'S'
             sleep 1
             print_map
+            sleep 1
             PlayerHomeHouse.new(true).begin
         end
     end
@@ -134,11 +137,14 @@ class PlayerHomeHouse < Map
             @map[2][4] = 'P'
             @map[8][10] = 'O'
             print_map
-            # slowly("MOM: See, Name? Isn't it nice in here, too?")
-            # slowly("The mover's POKEMON do all the work of moving us in and cleaning up after.")
-            # slowly("This is so convenient!")
-            # slowly("Name, your room is upstairs. Go check it out, dear!")
-            # slowly("DAD bought you a new clock to mark our move here.")
+            slowly("MOM: See, Name? Isn't it nice in here, too?")
+            reset_map
+            slowly("The mover's POKEMON do all the work of moving us in and cleaning up after.")
+            slowly("This is so convenient!")
+            reset_map
+            slowly("Name, your room is upstairs. Go check it out, dear!")
+            reset_map
+            slowly("DAD bought you a new clock to mark our move here.")
             slowly("Don't forget to set it!")
             move('up')            
         end
@@ -191,5 +197,11 @@ class PlayerHomeHouse < Map
 end
 
 
-p=PlayerHomeHouse.new(true)
-p.begin
+# p=Van.new()
+# p.begin
+
+
+
+
+#Issue with double moving in map
+#How to save global player without making it global

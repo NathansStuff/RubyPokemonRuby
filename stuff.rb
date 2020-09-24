@@ -1,4 +1,5 @@
-
+require './maps.rb'
+require 'tty-prompt'
 
 def ascii_1
     printf("  _..__                                    ___\n")
@@ -37,3 +38,9 @@ def slowly(str)
     end
     gets
 end
+
+def reset_map
+    system('clear')
+    print_map
+end
+

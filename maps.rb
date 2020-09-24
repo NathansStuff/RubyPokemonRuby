@@ -1,4 +1,5 @@
 require 'colorize'
+require 'io/console'
 
 class Map
 
@@ -58,7 +59,7 @@ class Map
             puts ''
         end
     end
-    
+
     #Adjusts player position
     def move(direction)
         #Sets current map spot equal to saved varibale (recreates the original map)
@@ -111,12 +112,17 @@ class Map
     #Get user input
     def input
         loop do
-            # case STDIN.getch.upcase!
-            case gets.chomp.upcase!
+            # Necessary insted of straight case STDIN
+            # Reset input so doesn't automatically return a value and interfere with dialogue gets function
+            button = STDIN.getch.upcase!
+            case button
+            # case gets.chomp.upcase!
             when 'A' then move('left')
             when 'S' then move('down')
             when 'D' then move('right')
             when 'W' then move('up')
+            else
+                button = '' # Aka, delete value
             end
         end
     end

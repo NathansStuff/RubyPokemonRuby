@@ -119,7 +119,8 @@ class Map
         input
     end
 
+    def small_map
+        little_map=@map[]
+    end
+
 end
-
-
-

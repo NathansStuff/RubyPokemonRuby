@@ -5,18 +5,29 @@
 # E = Exit
 require './maps.rb'
 require 'colorize'
+class Van < Map
 
-van = Map.new('van',[
-        ['1','`','`','`','`','`','2',],
-        ['|','R','R','R','R','S','|',],
-        ['|','R','S','S','S','S','E',],
-        ['|','R','S','S','S','S','E',],
-        ['|','R','R','R','S','S','E',],
-        ['|','R','R','R','R','S','|',],
-        ['3','`','`','`','`','`','4',]
-    ],2,2)
+    def initialize
+        @name='van'
+        @map=[
+            ['1','`','`','`','`','`','2',],
+            ['|','R','R','R','R','S','|',],
+            ['|','R','S','S','S','S','E',],
+            ['|','R','S','S','S','S','E',],
+            ['|','R','R','R','S','S','E',],
+            ['|','R','R','R','R','S','|',],
+            ['3','`','`','`','`','`','4',]
+            ]
+        @pos_x = 2
+        @pos_y = 2
+        @player_icon=super(@name,@map,@pos_x,@pos_y)
+        end
+end
 
-little_root=Map.new('Littleroot',[
+class LittleRoot < Map
+    def initialize
+        @name='Littleroot'
+        @map=[
     ['1','`','`','`','`','`','`','`','`','`','`','`','`','E','E','`','`','`','`','`','`','`','`','`','`','2',],
     ['|','T','T','T','T','T','T','T','T','T','T','T','T','S','S','T','T','T','T','T','T','T','T','T','T','|',],
     ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','T','T','|',],
@@ -37,8 +48,10 @@ little_root=Map.new('Littleroot',[
     ['|','T','T','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','T','T','T','T','|',],
     ['|','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','|',],
     ['3','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','4',],
-],10,10)
-# puts String.colors
-# van.begin
-little_root.begin
-# puts String.colors
+    ]
+    @pos_x=10
+    @pos_y=10
+    @player_icon=super(@name,@map,@pos_x,@pos_y)
+    end
+end
+LittleRoot.new.begin

@@ -18,12 +18,24 @@ class Map
         for row in @map
             for letter in row
                 case letter
+                when '`'
+                    print '─'.colorize(:light_blue)
+                when '|'
+                    print '|'.colorize(:light_blue)
+                when '1'
+                    print '┌'.colorize(:light_blue)
+                when '2'
+                    print '┐'.colorize(:light_blue)
+                when '3'
+                    print '└'.colorize(:light_blue)
+                when '4'
+                    print '┘'.colorize(:light_blue)
                 when 'R'
-                    print '██'.colorize(:red)
+                    print '█'.colorize(:red)
                 when 'S'
-                    print '██'.colorize(:light_black)
+                    print '█'.colorize(:light_black)
                 when 'X'
-                    print 'X '.colorize(:blue)
+                    print 'X'.colorize(:blue)
                 end
             end
             puts ''
@@ -31,18 +43,13 @@ class Map
     end
 
     def move(direction)
-        #For movement up
-        #Checks if eligible space to move to
-        #Todo-check if game exiting square
-        #Todo-Check if 'G' square and then diceroll
-        #Updates current position with old value to simulate moving through a map
-        #Saves new position's overriden value for next move
-        #Moves the character
-    
+        #Uses direction from input to check if there is a valid spot to move to. 
+        #If yes, updates old x/y to current spot, puts the saved variable in that spot (aka, recreating the original map)
+        #Then updates x/y position to spot moved to, updates map to represent player at that spot.
         @old_x = @pos_x
         @old_y = @pos_y
         @map[@old_x][@old_y] = @saved_variable
-        if direction == 'up' && (@map[@pos_x - 1][@pos_y] != 'R' && @map[@pos_x - 1][@pos_y] != 'T')
+        if direction == 'up' && (@map[@pos_x - 1][@pos_y] == 'R' && @map[@pos_x - 1][@pos_y] != 'T')
             @pos_x -=1
         elsif direction == 'down'&& (@map[@pos_x + 1][@pos_y] != 'R' && @map[@pos_x + 1][@pos_y] != 'T')
             @pos_x +=1
@@ -72,11 +79,13 @@ class Map
 end
 
 van = Map.new('van',[
-        ['R','R','R','R','S'],
-        ['R','S','S','S','S'],
-        ['R','S','S','S','S'],
-        ['R','R','R','S','S'],
-        ['R','R','R','R','S']
+        ['1','`','`','`','`','`','2',],
+        ['|','R','R','R','R','S','|',],
+        ['|','R','S','S','S','S','E',],
+        ['|','R','S','S','S','S','E',],
+        ['|','R','R','R','S','S','E',],
+        ['|','R','R','R','R','S','|',],
+        ['3','`','`','`','`','`','4',]
     ],2,2)
 
 van.input

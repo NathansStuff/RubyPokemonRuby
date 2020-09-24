@@ -1,7 +1,10 @@
 
-require 'RMagick'
+require 'rmagick'
 include Magick
 
-cat = ImageList.new("twitter.png")
-cat.display
-exit
+puts 'started'
+
+cat = Magick::ImageList.new("twitter.png")
+# cat.display
+# exit
+puts 'completed'

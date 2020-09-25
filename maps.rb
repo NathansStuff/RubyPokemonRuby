@@ -1,7 +1,8 @@
 require 'colorize'
 require 'io/console'
-
+require './stuff.rb'
 class Map
+    include ResetMap
 
     def initialize(name, map, pos_x, pos_y)
     @name=name

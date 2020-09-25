@@ -548,7 +548,7 @@ class ProfBirchHomeUpstairs < Map
             if (direction == 'up' && @pos_y == 8 && @pos_x == 3) || (direction == 'right' && @pos_y ==7 && @pos_x == 2) || (direction == 'left' && @pos_x == 2 && @pos_y == 9)
                 slowly("POKEMON fully restored!\nItems ready, and... Huh?")
                 reset_map
-                slowly("Huh? WHo... Who are you?")
+                slowly("Huh? Who... Who are you?")
                 reset_map
                 slowly("... ... ... ... ... ... ... ...\n... ... ... ... ... ... ... ...")
                 reset_map

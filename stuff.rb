@@ -45,3 +45,11 @@ def reset_map(time=0)
     sleep time
 end
 
+
+module ResetMap
+    def reset_map(time=0)
+        system('clear')
+        print_map
+        sleep time
+    end
+end

@@ -179,16 +179,19 @@ class PlayerHomeHouse < Map
              @map[4][7] = 'S'
              @map[4][6] = 'X'
              print_map
-            #  slowly("MOM: Look! It's PETALBURG GYM! Maybe DAD will be on!")
+             slowly("MOM: Look! It's PETALBURG GYM! Maybe DAD will be on!")
              @map[4][6] = 'S'
              @map[4][5] = 'X'
              @map[4][4] = 'O'
              print_map
-            #  slowly("INTERVIEWER: ...We brought you this report from in front of PETALBURG GYM.")
-            #  slowly("MOM: Oh... It's over.")
-            #  slowly("I think DAD was on, but we missed him. Too bad.")
-            #  slowly("Oh, yes. One of DAD's friends lives in town.")
-            #  slowly("PROF. BIRCH is his name.")
+             slowly("INTERVIEWER: ...We brought you this report from in front of PETALBURG GYM.")
+             slowly("MOM: Oh... It's over.")
+             print_map
+             slowly("I think DAD was on, but we missed him. Too bad.")
+             print_map
+             slowly("Oh, yes. One of DAD's friends lives in town.")
+             slowly("PROF. BIRCH is his name.")
+             print_map
              slowly("He lives right next door, so you should go over and introduce yourself.")
              @map[4][4] = 'S'
              @map[4][3] = 'O'
@@ -196,8 +199,12 @@ class PlayerHomeHouse < Map
              sleep 0.5
              @map[4][3] = 'S'
              @map[5][3] = 'O'
+             @pos_x = 4
+             @pos_y = 5
              print_map
 
+        else
+            @map[5][3]='O'
         end
     end
 

@@ -518,9 +518,115 @@ class ProfBirchHome < Map
     end
 end
 
-class ProfBirchHomeUpstairs
+class ProfBirchHomeUpstairs < Map
     def initialize(time=false)
+        @map = [
+            ['1','`','D','`','`','`','`','`','`','`','2',],
+            ['|','S','S','S','S','H','H','S','H','H','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','H','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['3','`','`','`','`','`','`','`','`','`','4',],
+        ]
+        @name = 'Prof Birch House | Level 1'
+        @pos_x = 1
+        @pos_y = 2
+        @saved_variable = 'S'
+        @player_icon = super(@name, @map, @pos_x, @pos_y)
+        @time=time
     end
+
+    # Map specific stuff - map exit & interactions with Prof. Birch child
+    def move(direction) 
+        # Exit map check
+        if direction == 'up' && @pos_y == 2 && @pos_x == 1
+            ProfBirchHome.new('top').begin
+        # If interacting with Prof Birch Child in first time instance, do a speech & animation
+        elsif @time == true 
+            if (direction == 'up' && @pos_y == 8 && @pos_x == 3) || (direction == 'right' && @pos_y ==7 && @pos_x == 2) || (direction == 'left' && @pos_x == 2 && @pos_y == 9)
+                slowly("POKEMON fully restored!\nItems ready, and... Huh?")
+                reset_map
+                slowly("Huh? WHo... Who are you?")
+                reset_map
+                slowly("... ... ... ... ... ... ... ...\n... ... ... ... ... ... ... ...")
+                reset_map
+                slowly("Oh, you're Name.\nSo your move was today.")
+                reset_map
+                slowly("Um... I'm Name2.\nGlad to meet you!")
+                reset_map
+                slowly("I...\nI have this dream of becoming friends")
+                slowly("with POKEMON all over the world.")
+                reset_map
+                slowly("I... I heard about you, Name, from\nmy dad, PROF. BIRCH.")
+                reset_map
+                slowly("I was hoping that you would be nice,\nName, and that we could be friends.")
+                reset_map
+                slowly("On, this is silly, isn't it?\nI... I've just met you, Name.")
+                reset_map
+                slowly("Eheheh...")
+                reset_map
+                slowly("Oh, no! I forgot!")
+                reset_map
+                slowly("I was supposed to go help Dad catch\nsome wild POKEMON!")
+                reset_map
+                slowly("Name, I'll catch you later!")
+                @map[2][8] = 'S'
+                if @pos_y != 7
+                    print_map
+                    @map[2][7] = 'O'
+                    reset_map 0.5
+                    @map[2][7] = 'S'
+                    @map[2][6] = 'O'
+                    reset_map 0.5
+                else
+                    @map[3][8] = 'O'
+                    reset_map 0.5
+                    @map[3][8] = 'S'
+                    @map[3][7] = 'O'
+                    reset_map 0.5
+                    @map[3][7] = 'S'
+                    @map[3][6] = 'O'
+                    reset_map 0.5
+                    @map[3][6] = 'S'
+                    @map[2][6] = 'O'
+                    reset_map 0.5
+                end
+                @map[2][6] = 'S'
+                @map[2][5] = 'O'
+                reset_map 0.5
+                @map[2][5] = 'S'
+                @map[2][4] = 'O'
+                reset_map 0.5
+                @map[2][4] = 'S'
+                @map[2][3] = 'O'
+                reset_map 0.5
+                @map[2][3] = 'S'
+                @map[2][2] = 'O'
+                reset_map 0.5
+                @map[2][2] = 'S'
+                @map[1][2] = 'O'
+                reset_map 0.5
+                @map[1][2] = 'S'
+                reset_map 0.5
+                @time = false
+            end
+        end
+        super
+    end
+
+    # Places Prof Birch child in her room
+    def time_setup
+        @time == true ? @map[2][8] = 'O' : nil
+    end
+
+    # Check for time setup (first time shenanigans)
+    def begin
+        time_setup
+        super
+    end
+
 end
 
 # p=LittleRoot.new(8,7,'second')
@@ -528,4 +634,4 @@ end
 
 
 
-ProfBirchHome.new('bot','').begin
+ProfBirchHomeUpstairs.new(true).begin

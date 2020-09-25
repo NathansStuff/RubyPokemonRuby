@@ -152,41 +152,50 @@ class PlayerHomeHouse < Map
 
     #ISSUE: IF ACTIVE, DOUBLE MOVES RIGHT/TOP
     def move(direction)
-        #If first time, prevent exiting at bottom
-        if @first_time == true
-            case direction 
-            when 'down'
-                if @map[7][9] == 'X'
-                    @map[7][9] = 'S'
-                    @map[8][9] = 'X'
-                    print_map
-                    slowly('Well, Name?')
-                    slowly("Aren't you interested in seeing your very own room?")
-                    @map[7][9] = 'X'
-                    @map[8][9] = 'D'
-                    print_map
+
+        #Extends the Map class move direction to load the next map
+        case direction 
+        when 'up'
+            if @pos_x == 2 && @pos_y == 8
+                exit!
+            end
+        when 'down'
+            if @pos_x == 7 && ( @pos_y == 9 || @pos_y == 10)
+                if @first_time == false
+                    LittleRoot.new.begin
                 else
-                    super
-                end
-            when 'right'
-                if @map[8][8] == 'X'
-                @map[8][8] = 'S'
-                @map[8][9] = 'X'
-                print_map
-                slowly('Well, Name?')
-                slowly("Aren't you interested in seeing your very own room?")
-                @map[8][8] = 'X'
-                @map[8][9] = 'D'
-                print_map
-                else
-                    super
+                    if @pos_y == 9
+                        mum_speech(7,9)
+                    end
                 end
             end
-            super
-        #If not first time, ignore everything
-        else
-            super
+        when 'right'
+            if @pos_x == 8 && @pos_y == 8 # Exit bottom of map from left
+                if @first_time == false
+                    LittleRoot.new.begin
+                else
+                    mum_speech(8,8) # No escape yet
+                end
+            end
+        when 'left' # Exit bottom of the map from the right
+            if @pos_x == 8 && @pos_y == 11
+                if @first_time == false
+                    LittleRoot.new.begin
+                end
+            end
         end
+        super
+    end
+
+    def mum_speech(x, y)
+        @map[x][y] = 'S'
+        @map[8][9] = 'X'
+        print_map
+        slowly('Well, Name?')
+        slowly("Aren't you interested in seeing your very own room?")
+        @map[x][y] = 'X'
+        @map[8][9] = 'D'
+        print_map
     end
 
     def begin
@@ -197,8 +206,8 @@ class PlayerHomeHouse < Map
 end
 
 
-# p=Van.new()
-# p.begin
+p=PlayerHomeHouse.new(true)
+p.begin
 
 
 

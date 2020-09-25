@@ -39,8 +39,9 @@ def slowly(str)
     gets
 end
 
-def reset_map
+def reset_map(time=0)
     system('clear')
     print_map
+    sleep time
 end
 

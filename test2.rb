@@ -1,10 +1,3 @@
+require 'tty-prompt'
 
-require 'rmagick'
-include Magick
-
-puts 'started'
-
-cat = Magick::ImageList.new("twitter.png")
-# cat.display
-# exit
-puts 'completed'
+TTY::Prompt.new.select("", %w(NEW TERRA KIMMY NICOLA SARA))

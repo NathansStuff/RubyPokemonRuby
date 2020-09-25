@@ -5,6 +5,8 @@
 # E = Exit
 # O - Person
 # P - Pokemon
+
+## AWS
 require './maps.rb'
 require 'colorize'
 require './stuff.rb'
@@ -31,7 +33,7 @@ class Van < Map
     def move(direction)
         if direction == 'right' #If exiting the van, load the next map
             if @map[@pos_x][@pos_y + 1] == 'E'
-                LittleRoot.new(true).begin
+                LittleRoot.new(8,7,'first').begin
             end
         end
         super #Otherwise, do the normal Map move function
@@ -39,7 +41,7 @@ class Van < Map
 end
 
 class LittleRoot < Map
-    def initialize(first_time=false)
+    def initialize(x, y, time='normal')
         @name='Littleroot'
         @map=[
     ['1','`','`','`','`','`','`','`','`','`','`','`','`','E','E','`','`','`','`','`','`','`','`','`','`','2',],
@@ -49,8 +51,8 @@ class LittleRoot < Map
     ['|','T','T','S','S','H','H','H','H','H','S','S','S','S','S','S','H','H','H','H','H','S','S','T','T','|',],
     ['|','T','T','S','S','H','H','H','H','H','S','S','S','S','S','S','H','H','H','H','H','S','S','T','T','|',],
     ['|','T','T','S','S','H','H','H','D','H','I','S','S','S','S','I','H','D','H','H','H','S','S','T','T','|',],
-    ['|','T','T','S','C','C','C','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
-    ['|','T','T','S','C','C','C','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
+    ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
+    ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
     ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
     ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
     ['|','T','T','S','S','S','H','H','H','H','H','H','H','S','S','S','S','S','I','S','S','S','S','T','T','|',],
@@ -63,16 +65,24 @@ class LittleRoot < Map
     ['|','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','|',],
     ['3','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','4',],
     ]
-    @pos_x=8
-    @pos_y=7
+    @pos_x=x
+    @pos_y=y
     @player_icon=super(@name,@map,@pos_x,@pos_y)
-    @first_time=first_time
+    @time=time
     @saved_variable='S'
     end
 
     # If first time, positioning overridden, dialogue and forced exit to playerhousemap
-    def is_first_time
-        if @first_time==true
+    # If second time, can't leave at top
+    def time_setup
+        case @time
+        when 'first' #Places car, mum animation and forces player to next map
+            @map[7][4] = 'C'
+            @map[7][5] = 'C'
+            @map[7][6] = 'C'
+            @map[8][4] = 'C'
+            @map[8][5] = 'C'
+            @map[8][6] = 'C'
             print_map
             @map[7][8] = 'O'
             sleep 1
@@ -81,7 +91,7 @@ class LittleRoot < Map
             @map[8][8] = 'O'
             sleep 1
             print_map
-            slowly("MOM: #{$player.name}, we're here, honey!")
+            slowly("MOM: Name, we're here, honey!")
             slowly("It must be tiring riding with our things in the moving truck")
             reset_map
             slowly("Well, this is LITTLEROOT TOWN.")
@@ -99,13 +109,115 @@ class LittleRoot < Map
             sleep 1
             print_map
             sleep 1
-            PlayerHomeHouse.new(true).begin
+            PlayerHomeHouse.new('bot', 'first').begin
+        when 'second' # Trusty little guard guy stops you from leaving
+            @map[2][10] = 'O' 
         end
     end
 
-    # Makes begin method check for first time before beginning
+    # Checks position and direction for stuff (moving to maps)
+    def move(direction)
+        if @time == 'second' # Free to explore town but can't leave
+            if direction == 'up'
+                if @pos_x == 1 && (@pos_y == 13 || @pos_y == 14) #If trying to exit at top
+                    # Little guy stops you
+                    @map[2][10] = 'S'
+                    @map[2][11] = 'O'
+                    reset_map 0.5
+                    @map[2][11] = 'S'
+                    @map[2][12] = 'O'
+                    reset_map 0.5
+                    @map[2][12] = 'S'
+                    @map[2][13] = 'O'
+                    reset_map 0.5
+                    @map[2][13] = 'S'
+                    # Top exit is two spots wide, little guy takes appropriate pathing depending on player
+                    if @pos_y == 13
+                        @map[2][14] = 'O'
+                        reset_map(0.5)
+                        @map[2][14] = 'S'
+                        @map[1][14] = 'O'
+                        reset_map 0.5
+                        @map[1][14] = 'S'
+                        @map[0][14] = 'O'
+                        reset_map 0.5
+                        @map[0][14] = 'D'
+                        @map[0][13] = 'O'
+                        reset_map 0.5
+                        cant_leave_speech 
+                        @map[0][13] = 'D'
+                        @map[0][14] = 'O'
+                        reset_map 0.5
+                        @map[0][14] = 'D'
+                        @map[1][14] = 'O'
+                        reset_map 0.5
+                        @map[1][14] = 'S'
+                        @map[2][14] = 'O'
+                        reset_map 0.5
+                        @map[2][14] = 'S'
+
+                    else
+                        @map[1][13] = 'O'
+                        reset_map 0.5
+                        @map[1][13] = 'S'
+                        @map[0][13] = 'O'
+                        reset_map 0.5
+                        @map[0][13] = 'D'
+                        @map[0][14] = 'O'
+                        reset_map 0.5
+                        cant_leave_speech
+                        @map[0][14] = 'D'
+                        @map[0][13] = 'O'
+                        reset_map 0.5
+                        @map[0][13] = 'D'
+                        @map[1][13] = 'O'
+                        reset_map 0.5
+                        @map[1][13] = 'S'
+                    end
+                    # Guy walks back to his guard spot
+                    @map[2][13] = 'O'
+                    reset_map 0.5
+                    @map[2][13] = 'S'
+                    @map[2][12] = 'O'
+                    reset_map 0.5
+                    @map[2][12] = 'S'
+                    @map[2][11] = 'O'
+                    reset_map 0.5
+                    @map[2][11] = 'S'
+                    @map[2][10] = 'O'
+                end
+            end
+        end
+
+        if direction == 'up'
+            case @pos_x
+            when 7
+                case @pos_y
+                when 8 # Enter Player Home
+                    PlayerHomeHouse.new('bot').begin
+                when 17 # Prof Birch's House
+                    puts "YES"
+                    gets
+                end
+            when 15
+                if @pos_y ==  11 # Prof Birch's Pokemon Lab
+                end
+            end
+        end
+
+        super # Carry on as normal
+    end
+
+    # Own method so don't have to write it twice (for 2x player position)
+    def cant_leave_speech
+        slowly("If you go in the tall grass at the sides\nof this road, wild POKEMON will appear.")
+        reset_map
+        slowly("It's not safe to go out there if you\ndon't have any POKEMON with you.")
+    end
+
+    # Makes begin method check and place time stuff (objects) before beginning
     def begin
-        is_first_time
+        time_setup
         super
     end
 end
@@ -226,7 +338,7 @@ class PlayerHomeHouse < Map
                 if @time == 'first' && @pos_y == 9
                     mum_speech(6,9) # No escape yet
                 else
-                   LittleRoot.new.begin
+                   LittleRoot.new(7,8,'second').begin
                 end
             end
         when 'right'
@@ -234,7 +346,7 @@ class PlayerHomeHouse < Map
                 if @time == 'first'
                     mum_speech(7,8) # No escape yet
                 else
-                    LittleRoot.new.begin
+                    LittleRoot.new(7,8,'second').begin
                 end
             end
         when 'left' # Exit bottom of the map from the right
@@ -247,7 +359,7 @@ class PlayerHomeHouse < Map
         super
     end
 
-    # Prevents player from exiting bottom of map
+    # First time - Prevents player from exiting bottom of map
     def mum_speech(x, y)
         @map[x][y] = 'S'
         @map[7][9] = 'X'
@@ -304,8 +416,9 @@ class PlayerHomeHouseUpstairs < Map
     end
 end
 
-p=PlayerHomeHouse.new('top','second')
+p=LittleRoot.new(8,7,'second')
 p.begin
 
 
 
+Van.new.begin

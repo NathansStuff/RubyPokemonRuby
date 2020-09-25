@@ -37,7 +37,7 @@ def begin_game_dialogue
         system('clear')
         if gender == 'BOY'
             slowly("All right. What's your name?")
-            name = prompt.select("", %w(NEW LANDON TERRY SETH TOM)) #ISSUE
+            name = prompt.select("", %w(NEW LANDON TERRY SETH TOM))
         else 
             slowly("All right. What's your name?")
             name = prompt.select("", %w(NEW TERRA KIMMY NICOLA SARA)) 

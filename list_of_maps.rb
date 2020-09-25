@@ -70,6 +70,7 @@ class LittleRoot < Map
     @saved_variable='S'
     end
 
+    # If first time, positioning overridden, dialogue and forced exit to playerhousemap
     def is_first_time
         if @first_time==true
             print_map
@@ -102,6 +103,7 @@ class LittleRoot < Map
         end
     end
 
+    # Makes begin method check for first time before beginning
     def begin
         is_first_time
         super
@@ -109,18 +111,23 @@ class LittleRoot < Map
 end
 
 class PlayerHomeHouse < Map
-    def initialize(first_time=false)
+    def initialize(position, time='normal')
     @name='Player Home'
-    @pos_x=8
-    @pos_y=9
-    @first_time=first_time
-    @saved_variable='D'
+    @time=time  
+    if position == 'top'
+        @pos_x=2
+        @pos_y=9
+        @saved_variable='S'
+    else
+        @pos_x=7
+        @pos_y=9  
+        @saved_variable='D'  
+    end
     @map=[
         ['1','`','`','`','`','`','`','`','`','`','`','`','2',],
-        ['|','H','H','H','H','H','H','H','D','H','H','H','|',],
+        ['|','H','H','H','H','H','H','H','H','D','H','H','|',],
         ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
-        ['|','S','S','S','H','H','H','H','S','S','S','S','|',],
-        ['|','S','S','S','H','H','S','S','S','S','S','S','|',],
+        ['|','S','S','H','H','H','S','S','S','S','S','S','|',],
         ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
         ['|','S','S','S','H','H','S','S','S','S','S','S','|',],
         ['|','S','S','S','H','H','S','S','S','S','S','S','|',],
@@ -131,11 +138,13 @@ class PlayerHomeHouse < Map
     end
 
     #Sets pokemon, mother + dialogue if first time
-    def is_first_time
-        if @first_time == true 
-            @map[4][6] = 'P'
+    def time_setup
+        case @time
+        when 'first' 
+            @map[4][5] = 'P'
             @map[2][4] = 'P'
-            @map[8][10] = 'O'
+            @map[3][6] = 'H'
+            @map[7][10] = 'O'
             print_map
             slowly("MOM: See, Name? Isn't it nice in here, too?")
             reset_map
@@ -146,71 +155,150 @@ class PlayerHomeHouse < Map
             reset_map
             slowly("DAD bought you a new clock to mark our move here.")
             slowly("Don't forget to set it!")
-            move('up')            
+            move('up')   
+        when 'second'
+             @map[4][5] = 'O'
+             print_map
+             slowly('MOM: Oh! Name, Name! Quick! Come quickly!')
+             @map[2][9] = 'S'
+             @map[3][9] = 'X'
+             print_map
+             sleep 0.5
+             @map[3][9] = 'S'
+             @map[4][9] = 'X'
+             print_map         
+             sleep 0.5
+             @map[4][9] = 'S'
+             @map[4][8] = 'X'
+             print_map
+             sleep 0.5
+             @map[4][8] = 'S'
+             @map[4][7] = 'X'
+             print_map
+             sleep 0.5
+             @map[4][7] = 'S'
+             @map[4][6] = 'X'
+             print_map
+            #  slowly("MOM: Look! It's PETALBURG GYM! Maybe DAD will be on!")
+             @map[4][6] = 'S'
+             @map[4][5] = 'X'
+             @map[4][4] = 'O'
+             print_map
+            #  slowly("INTERVIEWER: ...We brought you this report from in front of PETALBURG GYM.")
+            #  slowly("MOM: Oh... It's over.")
+            #  slowly("I think DAD was on, but we missed him. Too bad.")
+            #  slowly("Oh, yes. One of DAD's friends lives in town.")
+            #  slowly("PROF. BIRCH is his name.")
+             slowly("He lives right next door, so you should go over and introduce yourself.")
+             @map[4][4] = 'S'
+             @map[4][3] = 'O'
+             print_map
+             sleep 0.5
+             @map[4][3] = 'S'
+             @map[5][3] = 'O'
+             print_map
+
         end
     end
 
-    #ISSUE: IF ACTIVE, DOUBLE MOVES RIGHT/TOP
+    # Extends map class to check for specific map stuff (locations)
     def move(direction)
 
-        #Extends the Map class move direction to load the next map
         case direction 
+        # Load the next map
         when 'up'
-            if @pos_x == 2 && @pos_y == 8
-                exit!
+            if @pos_x == 2 && @pos_y == 9
+                if @time == 'first' #What instance of the map to load
+                    PlayerHomeHouseUpstairs.new('first').begin
+                else
+                    PlayerHomeHouseUpstairs.new.begin
+                end
             end
         when 'down'
-            if @pos_x == 7 && ( @pos_y == 9 || @pos_y == 10)
-                if @first_time == false
-                    LittleRoot.new.begin
+            if @pos_x == 6 && ( @pos_y == 9 || @pos_y == 10) #Exit bottom of map from top
+                if @time == 'first' && @pos_y == 9
+                    mum_speech(6,9) # No escape yet
                 else
-                    if @pos_y == 9
-                        mum_speech(7,9)
-                    end
+                   LittleRoot.new.begin
                 end
             end
         when 'right'
-            if @pos_x == 8 && @pos_y == 8 # Exit bottom of map from left
-                if @first_time == false
-                    LittleRoot.new.begin
+            if @pos_x == 7 && @pos_y == 8 # Exit bottom of map from left
+                if @time == 'first'
+                    mum_speech(7,8) # No escape yet
                 else
-                    mum_speech(8,8) # No escape yet
+                    LittleRoot.new.begin
                 end
             end
         when 'left' # Exit bottom of the map from the right
-            if @pos_x == 8 && @pos_y == 11
-                if @first_time == false
-                    LittleRoot.new.begin
+            if @pos_x == 7 && @pos_y == 11
+                if @time == 'first' # No escape yet
+                    mum_speech(8,7)
                 end
             end
         end
         super
     end
 
+    # Prevents player from exiting bottom of map
     def mum_speech(x, y)
         @map[x][y] = 'S'
-        @map[8][9] = 'X'
+        @map[7][9] = 'X'
         print_map
         slowly('Well, Name?')
         slowly("Aren't you interested in seeing your very own room?")
         @map[x][y] = 'X'
-        @map[8][9] = 'D'
+        @map[7][9] = 'D'
         print_map
     end
 
+    #When beginning, check if it is first time or not
     def begin
-        is_first_time
+        time_setup
         super
     end
 
 end
 
+class PlayerHomeHouseUpstairs < Map
+    def initialize(time='second')
+        @name = 'Home | Level 1'
+        @saved_variable = 'S'
+        @time=time #Only used for passing setting instance of next map when exiting
+        @map = [
+            ['1','`','`','`','`','`','`','`','D','`','2',],
+            ['|','H','I','S','H','H','I','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','H','H','S','S','S','S','S','S','|',],
+            ['|','S','H','H','S','S','S','S','S','S','|',],
+            ['|','S','H','H','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['3','`','`','`','`','`','`','`','`','`','4',]
+        ]
+        @pos_x = 1
+        @pos_y = 8
+        @player_icon = super(@name, @map, @pos_x, @pos_y)
+    end
 
-p=PlayerHomeHouse.new(true)
+    # Map specific moves (exit)
+    def move(direction)
+        if direction == 'up'
+            if @pos_x == 1 && @pos_y == 8 # Player in correct position
+                if @time == 'first' # What instance of the map to load
+                    PlayerHomeHouse.new('top', 'second').begin
+                else
+                    PlayerHomeHouse.new('top').begin
+                end
+            end
+        end
+        super
+    end
+end
+
+p=PlayerHomeHouse.new('top','second')
 p.begin
 
 
 
-
-#Issue with double moving in map
-#How to save global player without making it global

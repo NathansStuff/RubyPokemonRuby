@@ -5,6 +5,7 @@
 # E = Exit
 # O - Person
 # P - Pokemon
+# E = Empty
 
 ## AWS
 require './maps.rb'
@@ -416,9 +417,115 @@ class PlayerHomeHouseUpstairs < Map
     end
 end
 
-p=LittleRoot.new(8,7,'second')
-p.begin
+class ProfBirchHome < Map
+    def initialize(position='bot',time='normal')
+        @position=position
+        @time=time
+        @map=[
+            ['E','E','E','E','1','`','`','`','`','`','`','`','2',],
+            ['1','`','`','D','4','S','S','H','H','H','H','H','|',],
+            ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','H','H','H','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','H','H','S','S','S','|',],
+            ['|','S','S','S','S','S','S','H','H','O','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
+            ['3','`','D','D','`','`','`','`','`','`','`','`','4',],
+        ]
+        if @position=='bot'
+            @pos_x = 7
+            @pos_y = 3
+        else
+            @pos_x = 2
+            @pos_y = 3
+        end
+        @player_icon=super(@name, @map, @pos_x, @pos_y)
+        @saved_variable='S'
+    end
+
+    # Creates Birch wife's dialogue for first time entering the house
+    def time_setup
+        if @time=='first'
+            reset_map 0.5
+            @map[6][9] = 'S'
+            @map[7][9] = 'O'
+            reset_map 0.5
+            @map[7][9] = 'S'
+            @map[7][8] = 'O'
+            reset_map 0.5
+            @map[7][8] = 'S'
+            @map[7][7] = 'O'
+            reset_map 0.5
+            @map[7][7] = 'S'
+            @map[7][6] = 'O'
+            reset_map 0.5
+            @map[7][6] = 'S'
+            @map[7][5] = 'O'
+            reset_map 0.5
+            @map[7][5] = 'S'
+            @map[7][4] = 'O'
+            reset_map 0.5
+            slowly("Oh, hello. And you are?")
+            reset_map
+            slowly("... ... ... ... ... ... ... ... ... \n... ... ... ... ... ... ... ... ... ")
+            reset_map
+            slowly("Oh, you're Name, our new next-door\nneighbor! Hi!")
+            reset_map
+            slowly("We have a daughter about the same\nage as you.")
+            reset_map
+            slowly("Our daughter was excited about making\na new friend.")
+            reset_map
+            slowly("Our daughter is upstairs I think.")
+            reset_map
+            @map[7][4] = 'S'
+            @map[7][5] = 'O'
+            reset_map 0.5
+            @map[7][5] = 'S'
+            @map[7][6] = 'O'
+            reset_map 0.5
+            @map[7][6] = 'S'
+            @map[7][7] = 'O'
+            reset_map 0.5
+            @map[7][7] = 'S'
+            @map[7][8] = 'O'
+            reset_map 0.5
+            @map[7][8] = 'S'
+            @map[7][9] = 'O'
+            reset_map 0.5
+            @map[7][9] = 'S'
+            @map[6][9] = 'O'
+            reset_map
+        end
+    end
+
+    # Special movement! (Upstairs or back to town)
+    def move(direction)
+        # Upstairs
+        if direction =='up' && @pos_x == 2 && @pos_y == 3
+            ProfBirchHomeUpstairs.new(true).begin
+        # Exit to LittleRoot
+        elsif direction == 'down' && @pos_x == 7 && (@pos_y == 2 || @pos_y == 3)
+            LittleRoot.new(7, 17).begin
+        end
+        # Otherwise, move as normal
+        super
+    end
+
+    # Do time setup first then act as normal
+    def begin
+        time_setup
+        super
+    end
+end
+
+class ProfBirchHomeUpstairs
+    def initialize(time=false)
+    end
+end
+
+# p=LittleRoot.new(8,7,'second')
+# p.begin
 
 
 
-Van.new.begin
+ProfBirchHome.new('bot','').begin

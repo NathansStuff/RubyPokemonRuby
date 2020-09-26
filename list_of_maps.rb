@@ -207,6 +207,7 @@ class LittleRoot < Map
                 end
             when 15
                 if @pos_y ==  11 # Prof Birch's Pokemon Lab
+                    ProfBirchLab.new(@player).begin
                 end
             end
         end
@@ -610,11 +611,58 @@ class ProfBirchHomeUpstairs < Map
 
 end
 
+class ProfBirchLab < Map
+    def initialize(player)
+        @name = "Prof. Birch's Lab"
+        @player = player
+        @player_icon = @player.player_icon
+        @pos_x = 12
+        @pos_y = 7
+        @saved_variable = 'S'
+        @map = [
+            ['1','`','`','`','`','`','`','`','`','`','`','`','`','`','2',],
+            ['|','H','H','S','H','H','S','H','H','H','H','S','S','H','|',],
+            ['|','H','S','H','S','S','S','S','S','S','S','S','S','H','|',],
+            ['|','H','S','H','S','S','S','S','S','S','S','S','S','H','|',],
+            ['|','S','S','S','S','S','S','S','S','S','H','H','S','H','|',],
+            ['|','S','S','S','S','S','S','S','S','S','S','S','S','S','|',],
+            ['|','H','H','H','H','S','S','S','S','S','S','H','H','S','|',],
+            ['|','H','H','H','H','S','S','S','S','S','S','H','H','H','|',],
+            ['|','S','S','S','S','S','S','S','S','S','O','S','S','S','|',],
+            ['|','S','H','S','S','S','S','S','S','S','S','S','H','H','|',],
+            ['|','H','H','S','S','S','S','S','S','S','S','S','H','S','|',],
+            ['|','H','H','S','S','S','S','S','S','S','S','S','H','H','|',],
+            ['|','S','S','S','H','S','S','S','S','S','S','S','S','S','|',],
+            ['3','`','`','`','`','`','`','D','D','`','`','`','`','`','4',],
+        ]
+        @map[@pos_x][@pos_y] = @player_icon
+    end
+
+    # Check for map exit
+    def move(direction)
+        if direction == 'down' && @pos_x == 12 && (@pos_y == 7 || @pos_y == 8)
+            LittleRoot.new(@player,15,11).begin # Load the map!
+        end
+        super
+    end
+
+    # Modifies the map depending on what time you visit it
+    def time_setup
+    end
+
+    # Check for time setup modifications before beginning
+    def begin
+        time_setup
+        super
+    end
+
+end
+
 # p=LittleRoot.new(8,7,'second')
 # p.begin
 
 require './player.rb'
 p = Player.new('Nathan', 'male')
 p.littleroot = 'second'
-ProfBirchHomeUpstairs.new(p).begin
+ProfBirchLab.new(p).begin
 # 

@@ -1,7 +1,7 @@
 class Player
 
     attr_reader :name, :gender, :player_icon, :other_name, :other_gender
-    attr_accessor :littleroot, :playerhomehouse, :playerhomehouseupstairs, :profbirchhome, :profbirchhomeupstairs
+    attr_accessor :littleroot, :playerhomehouse, :playerhomehouseupstairs, :profbirchhome, :profbirchhomeupstairs, :profbirchlab
     def initialize(name, gender)
     @name=name
     @gender=gender
@@ -18,6 +18,7 @@ class Player
     @playerhomehouseupstairs = 'first'
     @profbirchhome = 'first'
     @profbirchhomeupstairs = 'first'
+    @profbirchlab = 'first'
     @player_icon = 'X'
     end
 

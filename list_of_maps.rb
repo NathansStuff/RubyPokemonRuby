@@ -11,6 +11,7 @@
 require './maps.rb'
 require 'colorize'
 require './stuff.rb'
+
 class Van < Map
     #Initialises the map
     def initialize(player)
@@ -202,8 +203,7 @@ class LittleRoot < Map
                 when 8 # Enter Player Home
                     PlayerHomeHouse.new(@player, 'bot').begin
                 when 17 # Prof Birch's House
-                    puts "YES"
-                    gets
+                    ProfBirchHome.new(@player).begin
                 end
             when 15
                 if @pos_y ==  11 # Prof Birch's Pokemon Lab
@@ -415,8 +415,9 @@ class ProfBirchHome < Map
             @pos_x = 2
             @pos_y = 3
         end
-        @player_icon=player.player_icon
+        @player_icon=@player.player_icon
         @saved_variable='S'
+        @map[@pos_x][@pos_y] = @player_icon
     end
 
     # Creates Birch wife's dialogue for first time entering the house
@@ -445,13 +446,13 @@ class ProfBirchHome < Map
             reset_map
             slowly("... ... ... ... ... ... ... ... ... \n... ... ... ... ... ... ... ... ... ")
             reset_map
-            slowly("Oh, you're Name, our new next-door\nneighbor! Hi!")
+            slowly("Oh, you're #{ @player.name }, our new next-door\nneighbor! Hi!")
             reset_map
-            slowly("We have a daughter about the same\nage as you.")
+            slowly("We have a #{ @player.other_gender } about the same\nage as you.")
             reset_map
-            slowly("Our daughter was excited about making\na new friend.")
+            slowly("Our #{ @player.other_gender } was excited about making\na new friend.")
             reset_map
-            slowly("Our daughter is upstairs I think.")
+            slowly("Our #{ @player.other_gender } is upstairs I think.")
             reset_map
             @map[7][4] = 'S'
             @map[7][5] = 'O'
@@ -471,7 +472,7 @@ class ProfBirchHome < Map
             @map[7][9] = 'S'
             @map[6][9] = 'O'
             reset_map
-            player.profbirchhome = 'second'
+            @player.profbirchhome = 'second'
         end
     end
 
@@ -479,10 +480,10 @@ class ProfBirchHome < Map
     def move(direction)
         # Upstairs
         if direction =='up' && @pos_x == 2 && @pos_y == 3
-            ProfBirchHomeUpstairs.new(player).begin
+            ProfBirchHomeUpstairs.new(@player).begin
         # Exit to LittleRoot
         elsif direction == 'down' && @pos_x == 7 && (@pos_y == 2 || @pos_y == 3)
-            LittleRoot.new(player,7, 17).begin
+            LittleRoot.new(@player,7, 17).begin
         end
         # Otherwise, move as normal
         super
@@ -511,15 +512,17 @@ class ProfBirchHomeUpstairs < Map
         @pos_x = 1
         @pos_y = 2
         @saved_variable = 'S'
-        @player_icon = player.player_icon
         @player = player
+        @player_icon = @player.player_icon
+        @map[@pos_x][@pos_y] = @player_icon
+
     end
 
     # Map specific stuff - map exit & interactions with Prof. Birch child
     def move(direction) 
         # Exit map check
         if direction == 'up' && @pos_y == 2 && @pos_x == 1
-            ProfBirchHome.new('top').begin
+            ProfBirchHome.new(@player, 'top').begin
         # If interacting with Prof Birch Child in first time instance, do a speech & animation
         elsif @player.profbirchhomeupstairs == 'first' 
             if (direction == 'up' && @pos_y == 8 && @pos_x == 3) || (direction == 'right' && @pos_y ==7 && @pos_x == 2) || (direction == 'left' && @pos_x == 2 && @pos_y == 9)
@@ -529,18 +532,18 @@ class ProfBirchHomeUpstairs < Map
                 reset_map
                 slowly("... ... ... ... ... ... ... ...\n... ... ... ... ... ... ... ...")
                 reset_map
-                slowly("Oh, you're Name.\nSo your move was today.")
+                slowly("Oh, you're #{ @player.name }.\nSo your move was today.")
                 reset_map
-                slowly("Um... I'm Name2.\nGlad to meet you!")
+                slowly("Um... I'm #{ @player.other_name }.\nGlad to meet you!")
                 reset_map
                 slowly("I...\nI have this dream of becoming friends")
                 slowly("with POKEMON all over the world.")
                 reset_map
-                slowly("I... I heard about you, Name, from\nmy dad, PROF. BIRCH.")
+                slowly("I... I heard about you, #{ @player.name }, from\nmy dad, PROF. BIRCH.")
                 reset_map
-                slowly("I was hoping that you would be nice,\nName, and that we could be friends.")
+                slowly("I was hoping that you would be nice,\n#{ @player.name }, and that we could be friends.")
                 reset_map
-                slowly("On, this is silly, isn't it?\nI... I've just met you, Name.")
+                slowly("On, this is silly, isn't it?\nI... I've just met you, #{ @player.name }.")
                 reset_map
                 slowly("Eheheh...")
                 reset_map
@@ -548,7 +551,7 @@ class ProfBirchHomeUpstairs < Map
                 reset_map
                 slowly("I was supposed to go help Dad catch\nsome wild POKEMON!")
                 reset_map
-                slowly("Name, I'll catch you later!")
+                slowly("#{ @player.name }, I'll catch you later!")
                 @map[2][8] = 'S'
                 if @pos_y != 7
                     print_map
@@ -588,6 +591,7 @@ class ProfBirchHomeUpstairs < Map
                 @map[1][2] = 'S'
                 reset_map 0.5
                 @player.profbirchhomeupstairs = 'second'
+                @player.littleroot = 'third'
             end
         end
         super
@@ -595,7 +599,7 @@ class ProfBirchHomeUpstairs < Map
 
     # Places Prof Birch child in her room
     def time_setup
-        @time == true ? @map[2][8] = 'O' : nil
+        @player.profbirchhomeupstairs == 'first' ? @map[2][8] = 'O' : nil
     end
 
     # Check for time setup (first time shenanigans)
@@ -609,7 +613,8 @@ end
 # p=LittleRoot.new(8,7,'second')
 # p.begin
 
-
-
-# ProfBirchHomeUpstairs.new(true).begin
+require './player.rb'
+p = Player.new('Nathan', 'male')
+p.littleroot = 'second'
+ProfBirchHomeUpstairs.new(p).begin
 # 

@@ -2,7 +2,7 @@ require 'colorize'
 require 'io/console'
 require './stuff.rb'
 class Map
-    include ResetMap
+    # include ResetMap
 
     def initialize(name, map, pos_x, pos_y)
     @name=name
@@ -11,7 +11,6 @@ class Map
     @pos_y=pos_y
     @old_x=0
     @old_y=0
-    @player_icon='X'
     @map[@pos_x][@pos_y]=@player_icon
     end
 

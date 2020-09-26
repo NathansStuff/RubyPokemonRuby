@@ -119,6 +119,8 @@ class LittleRoot < Map
             PlayerHomeHouse.new(@player,'bot').begin
         when 'second' # Trusty little guard guy stops you from leaving
             @map[2][10] = 'O' 
+        when 'third' # Trust little guard is a nervous bystander
+            @map[1][13] = 'O'
         end
     end
 
@@ -210,6 +212,13 @@ class LittleRoot < Map
                     ProfBirchLab.new(@player).begin
                 end
             end
+        end
+
+        # Trusty litte guy has to give his 'save the prof plz' speech
+        #                                                   player moves into little guy               player moves up past                          player moves into from left
+        if @player.littleroot == 'third' && (direction == 'up' && (@pos_x == 2 && @pos_y == 13) || (@pos_x == 1 && @pos_y == 14)) || (direction == 'left' && @pos_x == 1 && @pos_y == 14) 
+            slowly("I can hear someone shouting down the\nroad here.")
+            slowly("What should I do? What should we do?\nSomeody has to go help...")
         end
 
         super # Carry on as normal
@@ -663,6 +672,6 @@ end
 
 require './player.rb'
 p = Player.new('Nathan', 'male')
-p.littleroot = 'second'
-ProfBirchLab.new(p).begin
+p.littleroot = 'third'
+LittleRoot.new(p,3,15).begin
 # 

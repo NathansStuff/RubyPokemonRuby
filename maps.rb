@@ -54,6 +54,10 @@ class Map
                     print 'O'.colorize(:blue)
                 when 'P'
                     print 'P'.colorize(:blue)
+                when 'G'
+                    print '█'.colorize(:yellow)
+                when 'L'
+                    print '█'
                 end
             end
             puts ''
@@ -75,32 +79,38 @@ class Map
             when 'S'
                 @saved_variable = 'S'
                 @pos_x -= 1
-            when 'E'
-                exit!
+            when 'G'
+                @saved_variable = 'G'
+                @pos_x -= 1
             end
         when 'down'
             case @map[@pos_x + 1][@pos_y]
             when 'S'
                 @saved_variable = 'S'
                 @pos_x += 1
-            when 'E'
-                exit!
+            when 'L'
+                @pos_x += 2
+            when 'G'
+                @saved_variable = 'G'
+                @pos_x += 1
             end
         when 'left'
             case @map[@pos_x][@pos_y - 1]
             when 'S'
                 @saved_variable = 'S'
                 @pos_y -= 1
-            when 'E'
-                exit!
+            when 'G'
+                @saved_variable = 'G'
+                @pos_y -= 1
             end
         when 'right'
             case @map[@pos_x][@pos_y + 1]
             when 'S'
                 @saved_variable = 'S'
                 @pos_y += 1
-            when 'E'
-                exit!
+            when 'G'
+                @saved_variable = 'G'
+                @pos_y += 1
             end
         end
         

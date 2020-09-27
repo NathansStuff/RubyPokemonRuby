@@ -6,6 +6,9 @@
 # O - Person
 # P - Pokemon
 # E = Empty
+# G = Grass
+# C - Car
+# L = cLiff
 
 ## AWS
 require './maps.rb'
@@ -667,11 +670,48 @@ class ProfBirchLab < Map
 
 end
 
-# p=LittleRoot.new(8,7,'second')
-# p.begin
+class Route101 < Map
+    def initialize(player,position='bot')
+        @player=player
+        @player_icon=player.player_icon
+        @position=position
+        @name = 'Route 101'
+        @map = [
+            ['T','T','T','T','T','T','T','T','S','S','S','S','T','T','T','T','T','T','T','T',],
+            ['T','T','G','G','G','S','S','S','S','S','S','S','S','G','G','G','T','T','T','T',],
+            ['T','T','G','G','G','G','S','S','S','S','S','S','G','G','G','G','T','T','T','T',],
+            ['G','G','G','G','G','G','S','S','S','S','S','S','G','G','G','G','G','G','T','T',],
+            ['G','G','G','G','G','S','S','S','S','S','S','S','G','G','G','G','G','G','T','T',],
+            ['T','T','G','G','S','S','L','L','L','L','L','T','T','G','G','G','G','S','S','S',],
+            ['T','T','L','L','L','L','L','S','S','S','S','T','T','T','T','S','S','S','S','S',],
+            ['T','T','S','S','S','S','S','S','S','S','S','T','T','T','T','S','S','S','S','S',],
+            ['T','T','T','T','S','S','S','S','S','S','S','T','T','G','G','S','S','S','S','S',],
+            ['T','T','T','T','S','S','S','S','S','S','S','G','G','G','G','G','S','S','S','S',],
+            ['T','T','T','T','S','S','S','S','S','S','S','G','G','G','G','G','G','S','S','S',],
+            ['T','T','T','T','S','S','S','S','S','S','S','G','G','G','G','G','G','S','S','S',],
+            ['T','T','G','G','S','S','S','S','L','L','L','L','G','G','G','G','G','S','S','S',],
+            ['G','G','G','G','G','S','S','S','S','S','S','S','T','T','G','G','S','S','T','T',],
+            ['G','G','G','G','G','S','S','S','S','S','S','S','T','T','G','G','S','S','T','T',],
+            ['T','T','G','G','G','G','S','S','S','S','S','S','T','T','T','T','T','T','T','T',],
+            ['T','T','G','G','G','S','S','S','S','S','S','S','T','T','T','T','T','T','T','T',],
+            ['T','T','T','T','T','T','T','T','T','T','S','S','T','T','T','T','T','T','T','T',],
+            ['T','T','T','T','T','T','T','T','T','T','S','S','T','T','T','T','T','T','T','T',],
+        ]
+        @saved_variable = 'S'
+        @pos_x = 2
+        @pos_y = 10
+        @map[@pos_x][@pos_y] = @player_icon
+    end
+end
+
+
 
 require './player.rb'
 p = Player.new('Nathan', 'male')
-p.littleroot = 'third'
-LittleRoot.new(p,3,15).begin
-# 
+# p.littleroot = 'third'
+
+
+# p.littleroot = 'third'
+Route101.new(p).begin
+# require 'colorize'
+# puts String.colors

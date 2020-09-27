@@ -14,6 +14,7 @@ class Map
     @map[@pos_x][@pos_y]=@player_icon
     @player=player
     @player_icon=@player.player_icon
+    @other_icon=@player.other_icon
     end
 
     #Clears terminal, prints map according to characters
@@ -32,8 +33,12 @@ class Map
                     print '┐'.colorize(:light_blue)
                 when '3'
                     print '└'.colorize(:light_blue)
+                when '3a'
+                    print '└─'.colorize(:light_blue)
                 when '4'
                     print '┘'.colorize(:light_blue)
+                when '4a'
+                    print '─┘'.colorize(:light_blue)
                 when 'R'
                     print "\u{1F4E6}".colorize(:red)
                 when 'S'
@@ -41,7 +46,7 @@ class Map
                 when 'T'
                     print "\u{1F333}".colorize(:green)
                 when 'X'
-                    print "#{@player_icon}"
+                    print "#{ @player_icon }"
                 when 'H'
                     print '██'.colorize(:light_magenta)
                 when 'I'
@@ -55,11 +60,11 @@ class Map
                 when 'O'
                     print ' O'.colorize(:blue)
                 when 'P'
-                    print 'P'.colorize(:blue)
+                    print "\u{1F43B}".colorize(:blue)
                 when 'G'
-                    print '█'.colorize(:yellow)
+                    print "\u{1F33F}".colorize(:yellow)
                 when 'L'
-                    print '█'
+                    print "\u{26F0}\u{26F0}"
                 when 'B' 
                     print '█'.colorize(:blue)
                 when 'box'
@@ -70,6 +75,32 @@ class Map
                     print "\u{1F475}"
                 when 'boy'
                     print "\u{1F466}"
+                when 'girl'
+                    print "\u{1F467}"
+                when 'chair'
+                    print "\u{1FA91}"
+                when 'tv'
+                    print "\u{1F4FA}"
+                when 'clock'
+                    print "\u{1F55B}"
+                when 'pc'
+                    print "\u{1F4BB}"
+                when 'bed'
+                    print "\u{1F6CF} "
+                when 'other_icon'
+                    print "#{ @other_icon }"
+                when 'flower'
+                    print "\u{1F33C}"
+                when 'assistant'
+                    print "\u{1F468}"
+                when 'books'
+                    print "📚"
+                when 'cabinet'
+                    print "🗄 "
+                when 'basket'
+                    print "\u{1F9FA}"
+                when 'prof'
+                    print "\u{1F468}"
                 end
             end
             puts ''
@@ -94,6 +125,12 @@ class Map
             when 'G'
                 @saved_variable = 'G'
                 @pos_x -= 1
+            when 'chair'
+                @saved_variable = 'chair'
+                @pos_x -= 1
+            when 'flower'
+                @saved_variable = 'flower'
+                @pos_x -=1
             end
         when 'down'
             case @map[@pos_x + 1][@pos_y]
@@ -105,6 +142,12 @@ class Map
             when 'G'
                 @saved_variable = 'G'
                 @pos_x += 1
+            when 'chair'
+                @saved_variable = 'chair'
+                @pos_x += 1
+            when 'flower'
+                @saved_variable = 'flower'
+                @pos_x +=1
             end
         when 'left'
             case @map[@pos_x][@pos_y - 1]
@@ -114,6 +157,12 @@ class Map
             when 'G'
                 @saved_variable = 'G'
                 @pos_y -= 1
+            when 'chair'
+                @saved_variable = 'chair'
+                @pos_y -= 1
+            when 'flower'
+                @saved_variable = 'flower'
+                @pos_y-=1
             end
         when 'right'
             case @map[@pos_x][@pos_y + 1]
@@ -123,6 +172,12 @@ class Map
             when 'G'
                 @saved_variable = 'G'
                 @pos_y += 1
+            when 'chair'
+                @saved_variable = 'chair'
+                @pos_y += 1
+            when 'flower'
+                @saved_variable = 'flower'
+                @pos_y +=1
             end
         end
         

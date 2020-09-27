@@ -57,18 +57,18 @@ class LittleRoot < Map
     ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','T','T','|',],
     ['|','T','T','S','S','H','H','H','H','H','S','S','S','S','S','S','H','H','H','H','H','S','S','T','T','|',],
     ['|','T','T','S','S','H','H','H','H','H','S','S','S','S','S','S','H','H','H','H','H','S','S','T','T','|',],
-    ['|','T','T','S','S','H','H','H','H','H','S','S','S','S','S','S','H','H','H','H','H','S','S','T','T','|',],
-    ['|','T','T','S','S','H','H','H','D','H','I','S','S','S','S','I','H','D','H','H','H','S','S','T','T','|',],
-    ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
-    ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
+    ['|','T','T','S','S','H','H','H','H','H','S','S','S','S','S','S','H','H','H','H','H','S','flower','T','T','|',],
+    ['|','T','T','flower','S','H','H','H','D','H','I','S','S','S','S','I','H','D','H','H','H','flower','S','T','T','|',],
+    ['|','T','T','S','flower','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','flower','T','T','|',],
+    ['|','T','T','flower','S','S','flower','S','S','S','S','S','S','S','S','S','S','S','S','flower','S','flower','S','T','T','|',],
     ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
     ['|','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','|',],
     ['|','T','T','S','S','S','H','H','H','H','H','H','H','S','S','S','S','S','I','S','S','S','S','T','T','|',],
     ['|','T','T','S','S','S','H','H','H','H','H','H','H','S','S','S','S','S','S','S','S','S','S','T','T','|',],
     ['|','T','T','S','S','S','H','H','H','H','H','H','H','S','S','S','S','S','S','S','S','S','S','T','T','|',],
     ['|','T','T','S','S','S','H','H','H','H','H','D','H','S','S','S','S','S','S','S','S','T','T','T','T','|',],
-    ['|','T','T','S','S','S','S','S','S','S','I','S','S','S','S','S','S','S','S','S','S','T','T','T','T','|',],
-    ['|','T','T','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','T','T','T','T','|',],
+    ['|','T','T','S','S','S','S','flower','flower','flower','I','S','S','S','S','S','S','S','S','S','S','T','T','T','T','|',],
+    ['|','T','T','T','T','S','S','flower','flower','flower','S','S','S','S','S','S','S','S','S','T','T','T','T','T','T','|',],
     ['|','T','T','T','T','S','S','S','S','S','S','S','S','S','S','S','S','S','S','T','T','T','T','T','T','|',],
     ['|','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','T','|',],
     ['3','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','4',],
@@ -79,6 +79,7 @@ class LittleRoot < Map
     @player=player
     @player_icon=@player.player_icon
     @map[@pos_x][@pos_y] = "X"
+    @talk = 0
     end
 
     # If first time, positioning overridden, dialogue and forced exit to playerhousemap
@@ -210,17 +211,26 @@ class LittleRoot < Map
                 if @pos_y ==  11 # Prof Birch's Pokemon Lab
                     ProfBirchLab.new(@player).begin
                 end
+            when 1 
+                if @pos_y == 13 || @pos_y == 14 # Exit map at top to Route101 Map
+
+                    if @player.littleroot == 'third' && @talk == 0
+                        slowly("I can hear someone shouting down the\nroad here.")
+                        reset_map
+                        slowly("What should I do? What should we do?\nSomeody has to go help...")
+                        reset_map
+                        @talk += 1 # Don't do the talk again
+                    elsif @player.littleroot == 'second'
+                        nil
+                    else
+                        @player.littleroot = 'normal' # Set the little root map to be loaded next time
+                        Route101.new(@player).begin
+                    end
+                end
             end
         end
 
-        # Trusty litte guy has to give his 'save the prof plz' speech
-        #                                                   player moves into little guy               player moves up past                          player moves into from left
-        if @player.littleroot == 'third' && (direction == 'up' && (@pos_x == 2 && @pos_y == 13) || (@pos_x == 1 && @pos_y == 14)) || (direction == 'left' && @pos_x == 1 && @pos_y == 14) 
-            slowly("I can hear someone shouting down the\nroad here.")
-            reset_map
-            slowly("What should I do? What should we do?\nSomeody has to go help...")
-        end
-
+        
         super # Carry on as normal
     end
 
@@ -253,17 +263,17 @@ class PlayerHomeHouse < Map
         @saved_variable='S'  
     end
     @map=[
-        ['1','`','`','`','`','`','`','`','`','`','`','`','2',],
-        ['|','H','H','H','H','H','H','H','H','D','H','H','|',],
+        ['1','`','`','`','`','`','`','`','2',],
+        ['|','cabinet','cabinet','cabinet','cabinet','cabinet','cabinet','cabinet','3a','D','`','`','2',],
         ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
-        ['|','S','S','H','H','H','S','S','S','S','S','S','|',],
+        ['|','S','S','cabinet','cabinet','tv','S','S','S','S','S','S','|',],
         ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
-        ['|','S','S','S','H','H','S','S','S','S','S','S','|',],
-        ['|','S','S','S','H','H','S','S','S','S','S','S','|',],
+        ['|','S','S','chair','basket','basket','chair','S','S','S','S','S','|',],
+        ['|','S','S','chair','basket','basket','chair','S','S','S','S','S','|',],
         ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
         ['3','`','`','`','`','`','`','`','`','D','D','`','4',],
     ]
-    @map[@pos_x][@pos_y] = @player_icon
+    @map[@pos_x][@pos_y] = 'X'
     end
 
     #Sets pokemon, mother + dialogue if first time
@@ -272,20 +282,20 @@ class PlayerHomeHouse < Map
         when 'first' 
             @map[4][5] = 'P'
             @map[2][4] = 'P'
-            @map[3][6] = 'H'
-            @map[8][10] = 'O'
+            @map[3][6] = 'box'
+            @map[8][10] = 'lady'
             print_map
-            slowly("MOM: See, Name? Isn't it nice in here, too?")
+            slowly("MOM: See, #{ @player.name }? Isn't it nice in here, too?")
             reset_map
             slowly("The mover's POKEMON do all the work of moving us in and cleaning up after.")
             slowly("This is so convenient!")
             reset_map
-            slowly("Name, your room is upstairs. Go check it out, dear!")
+            slowly("#{ @player.name }, your room is upstairs. Go check it out, dear!")
             reset_map
             slowly("DAD bought you a new clock to mark our move here.")
             slowly("Don't forget to set it!")
         when 'second'
-             @map[4][5] = 'O'
+             @map[4][5] = 'lady'
              print_map
              slowly("MOM: Oh! #{ @player.name }, #{ @player.name }! Quick! Come quickly!")
              @map[2][9] = 'S'
@@ -310,7 +320,7 @@ class PlayerHomeHouse < Map
              slowly("MOM: Look! It's PETALBURG GYM! Maybe DAD will be on!")
              @map[4][6] = 'S'
              @map[4][5] = 'X'
-             @map[4][4] = 'O'
+             @map[4][4] = 'lady'
              print_map
              slowly("INTERVIEWER: ...We brought you this report from in front of PETALBURG GYM.")
              slowly("MOM: Oh... It's over.")
@@ -322,11 +332,11 @@ class PlayerHomeHouse < Map
              print_map
              slowly("He lives right next door, so you should go over and introduce yourself.")
              @map[4][4] = 'S'
-             @map[4][3] = 'O'
+             @map[4][3] = 'lady'
              print_map
              sleep 0.5
              @map[4][3] = 'S'
-             @map[5][3] = 'O'
+             @map[5][3] = 'lady'
              @player.playerhomehouse = 'third' # Never again go through this speech
              @pos_x = 4
              @pos_y = 5
@@ -377,12 +387,12 @@ class PlayerHomeHouseUpstairs < Map
         @saved_variable = 'S'
         @map = [
             ['1','`','`','`','`','`','`','`','D','`','2',],
-            ['|','H','I','S','H','H','I','S','S','S','|',],
+            ['|','pc','cabinet','S','cabinet','clock','tv','S','S','S','|',],
+            ['|','chair','S','S','S','S','S','S','S','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
-            ['|','S','H','H','S','S','S','S','S','S','|',],
-            ['|','S','H','H','S','S','S','S','S','S','|',],
-            ['|','S','H','H','S','S','S','S','S','S','|',],
+            ['|','S','S','bed','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','S','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
             ['3','`','`','`','`','`','`','`','`','`','4',]
@@ -391,7 +401,7 @@ class PlayerHomeHouseUpstairs < Map
         @pos_y = 8
         @player = player
         @player_icon = @player.player_icon
-        @map[@pos_x][@pos_y] = @player_icon
+        @map[@pos_x][@pos_y] = 'X'
     end
 
     # Map specific moves (exit)
@@ -409,12 +419,12 @@ class ProfBirchHome < Map
         @player=player
         @map=[
             ['E','E','E','E','1','`','`','`','`','`','`','`','2',],
-            ['1','`','`','D','4','S','S','H','H','H','H','H','|',],
+            ['1','`','`','D','4a','S','S','cabinet','cabinet','cabinet','cabinet','cabinet','|',],
             ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
-            ['|','S','S','S','S','S','S','H','H','H','S','S','|',],
+            ['|','S','S','S','S','S','S','tv','cabinet','cabinet','S','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
-            ['|','S','S','S','S','S','S','H','H','S','S','S','|',],
-            ['|','S','S','S','S','S','S','H','H','O','S','S','|',],
+            ['|','S','S','S','S','S','chair','basket','basket','chair','S','S','|',],
+            ['|','S','S','S','S','S','chair','basket','basket','lady','S','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','S','S','|',],
             ['3','`','D','D','`','`','`','`','`','`','`','`','4',],
         ]
@@ -427,30 +437,30 @@ class ProfBirchHome < Map
         end
         @player_icon=@player.player_icon
         @saved_variable='S'
-        @map[@pos_x][@pos_y] = @player_icon
+        @map[@pos_x][@pos_y] = 'X'
     end
 
     # Creates Birch wife's dialogue for first time entering the house
     def time_setup
         if @player.profbirchhome =='first'
             reset_map 0.5
-            @map[6][9] = 'S'
-            @map[7][9] = 'O'
+            @map[6][9] = 'chair'
+            @map[7][9] = 'lady'
             reset_map 0.5
             @map[7][9] = 'S'
-            @map[7][8] = 'O'
+            @map[7][8] = 'lady'
             reset_map 0.5
             @map[7][8] = 'S'
-            @map[7][7] = 'O'
+            @map[7][7] = 'lady'
             reset_map 0.5
             @map[7][7] = 'S'
-            @map[7][6] = 'O'
+            @map[7][6] = 'lady'
             reset_map 0.5
             @map[7][6] = 'S'
-            @map[7][5] = 'O'
+            @map[7][5] = 'lady'
             reset_map 0.5
             @map[7][5] = 'S'
-            @map[7][4] = 'O'
+            @map[7][4] = 'lady'
             reset_map 0.5
             slowly("Oh, hello. And you are?")
             reset_map
@@ -465,22 +475,22 @@ class ProfBirchHome < Map
             slowly("Our #{ @player.other_gender } is upstairs I think.")
             reset_map
             @map[7][4] = 'S'
-            @map[7][5] = 'O'
+            @map[7][5] = 'lady'
             reset_map 0.5
             @map[7][5] = 'S'
-            @map[7][6] = 'O'
+            @map[7][6] = 'lady'
             reset_map 0.5
             @map[7][6] = 'S'
-            @map[7][7] = 'O'
+            @map[7][7] = 'lady'
             reset_map 0.5
             @map[7][7] = 'S'
-            @map[7][8] = 'O'
+            @map[7][8] = 'lady'
             reset_map 0.5
             @map[7][8] = 'S'
-            @map[7][9] = 'O'
+            @map[7][9] = 'lady'
             reset_map 0.5
             @map[7][9] = 'S'
-            @map[6][9] = 'O'
+            @map[6][9] = 'lady'
             reset_map
             @player.profbirchhome = 'second'
         end
@@ -510,11 +520,11 @@ class ProfBirchHomeUpstairs < Map
     def initialize(player)
         @map = [
             ['1','`','D','`','`','`','`','`','`','`','2',],
-            ['|','S','S','S','S','H','H','S','H','H','|',],
+            ['|','S','S','S','S','clock','tv','S','H','pc','|',],
+            ['|','S','S','S','S','S','S','S','S','chair','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
-            ['|','S','S','S','S','S','S','S','H','S','|',],
-            ['|','S','S','S','S','S','S','S','S','S','|',],
+            ['|','S','S','S','S','S','S','S','bed','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
             ['3','`','`','`','`','`','`','`','`','`','4',],
         ]
@@ -524,7 +534,8 @@ class ProfBirchHomeUpstairs < Map
         @saved_variable = 'S'
         @player = player
         @player_icon = @player.player_icon
-        @map[@pos_x][@pos_y] = @player_icon
+        @other_icon = @player.other_icon
+        @map[@pos_x][@pos_y] = 'X'
 
     end
 
@@ -565,38 +576,38 @@ class ProfBirchHomeUpstairs < Map
                 @map[2][8] = 'S'
                 if @pos_y != 7
                     print_map
-                    @map[2][7] = 'O'
+                    @map[2][7] = 'other_icon'
                     reset_map 0.5
                     @map[2][7] = 'S'
-                    @map[2][6] = 'O'
+                    @map[2][6] = 'other_icon'
                     reset_map 0.5
                 else
-                    @map[3][8] = 'O'
+                    @map[3][8] = 'other_icon'
                     reset_map 0.5
                     @map[3][8] = 'S'
-                    @map[3][7] = 'O'
+                    @map[3][7] = 'other_icon'
                     reset_map 0.5
                     @map[3][7] = 'S'
-                    @map[3][6] = 'O'
+                    @map[3][6] = 'other_icon'
                     reset_map 0.5
                     @map[3][6] = 'S'
-                    @map[2][6] = 'O'
+                    @map[2][6] = 'other_icon'
                     reset_map 0.5
                 end
                 @map[2][6] = 'S'
-                @map[2][5] = 'O'
+                @map[2][5] = 'other_icon'
                 reset_map 0.5
                 @map[2][5] = 'S'
-                @map[2][4] = 'O'
+                @map[2][4] = 'other_icon'
                 reset_map 0.5
                 @map[2][4] = 'S'
-                @map[2][3] = 'O'
+                @map[2][3] = 'other_icon'
                 reset_map 0.5
                 @map[2][3] = 'S'
-                @map[2][2] = 'O'
+                @map[2][2] = 'other_icon'
                 reset_map 0.5
                 @map[2][2] = 'S'
-                @map[1][2] = 'O'
+                @map[1][2] = 'other_icon'
                 reset_map 0.5
                 @map[1][2] = 'S'
                 reset_map 0.5
@@ -609,7 +620,7 @@ class ProfBirchHomeUpstairs < Map
 
     # Places Prof Birch child in her room
     def time_setup
-        @player.profbirchhomeupstairs == 'first' ? @map[2][8] = 'O' : nil
+        @player.profbirchhomeupstairs == 'first' ? @map[2][8] = 'other_icon' : nil
     end
 
     # Check for time setup (first time shenanigans)
@@ -630,21 +641,21 @@ class ProfBirchLab < Map
         @saved_variable = 'S'
         @map = [
             ['1','`','`','`','`','`','`','`','`','`','`','`','`','`','2',],
-            ['|','H','H','S','H','H','S','H','H','H','H','S','S','H','|',],
-            ['|','H','S','H','S','S','S','S','S','S','S','S','S','H','|',],
-            ['|','H','S','H','S','S','S','S','S','S','S','S','S','H','|',],
-            ['|','S','S','S','S','S','S','S','S','S','H','H','S','H','|',],
+            ['|','cabinet','cabinet','S','pc','basket','S','basket','basket','basket','basket','S','S','books','|',],
+            ['|','box','S','S','S','S','S','S','S','S','S','S','S','books','|',],
+            ['|','box','S','S','S','chair','S','S','S','S','S','S','S','basket','|',],
+            ['|','S','S','S','S','S','S','S','S','S','box','box','S','basket','|',],
             ['|','S','S','S','S','S','S','S','S','S','S','S','S','S','|',],
-            ['|','H','H','H','H','S','S','S','S','S','S','H','H','S','|',],
-            ['|','H','H','H','H','S','S','S','S','S','S','H','H','H','|',],
-            ['|','S','S','S','S','S','S','S','S','S','O','S','S','S','|',],
-            ['|','S','H','S','S','S','S','S','S','S','S','S','H','H','|',],
-            ['|','H','H','S','S','S','S','S','S','S','S','S','H','S','|',],
-            ['|','H','H','S','S','S','S','S','S','S','S','S','H','H','|',],
-            ['|','S','S','S','H','S','S','S','S','S','S','S','S','S','|',],
+            ['|','cabinet','cabinet','cabinet','cabinet','S','S','S','S','S','S','cabinet','cabinet','S','|',],
+            ['|','cabinet','cabinet','cabinet','cabinet','S','S','S','S','S','S','cabinet','cabinet','cabinet','|',],
+            ['|','S','S','S','S','S','S','S','S','S','assistant','S','S','S','|',],
+            ['|','S','pc','S','S','S','S','S','S','S','S','S','pc','flower','|',],
+            ['|','books','basket','chair','S','S','S','S','S','S','S','chair','basket','S','|',],
+            ['|','books','basket','S','S','S','S','S','S','S','S','S','basket','box','|',],
+            ['|','S','S','S','flower','S','S','S','S','S','S','S','S','S','|',],
             ['3','`','`','`','`','`','`','D','D','`','`','`','`','`','4',],
         ]
-        @map[@pos_x][@pos_y] = @player_icon
+        @map[@pos_x][@pos_y] = 'X'
     end
 
     # Check for map exit
@@ -674,7 +685,7 @@ class Route101 < Map
         @position=position
         @name = 'Route 101'
         @map = [
-            ['1','`','`','`','`','`','`','`','`','D','D','D','D','`','`','`','`','`','`','`','`','2',],
+            ['1','`','`','`','`','`','`','`','`','E','E','E','E','`','`','`','`','`','`','`','`','2',],
             ['|','T','T','T','T','T','T','T','T','S','S','S','S','T','T','T','T','T','T','T','T','|',],
             ['|','T','T','G','G','G','S','S','S','S','S','S','S','S','G','G','G','T','T','T','T','|',],
             ['|','T','T','G','G','G','G','S','S','S','S','S','S','G','G','G','G','T','T','T','T','|',],
@@ -694,7 +705,7 @@ class Route101 < Map
             ['|','T','T','G','G','G','S','S','S','S','S','S','S','T','T','T','T','T','T','T','T','|',],
             ['|','T','T','T','T','T','T','T','T','T','T','S','S','T','T','T','T','T','T','T','T','|',],
             ['|','T','T','T','T','T','T','T','T','T','T','S','S','T','T','T','T','T','T','T','T','|',],
-            ['3','`','`','`','`','`','`','`','`','`','`','D','D','`','`','`','`','`','`','`','`','4',],
+            ['3','`','`','`','`','`','`','`','`','`','`','E','E','`','`','`','`','`','`','`','`','4',],
         ]
         @saved_variable = 'S'
         if @position == 'bot'
@@ -704,7 +715,7 @@ class Route101 < Map
             @pos_x = 1
             @pos_y = 10
         end
-        @map[@pos_x][@pos_y] = @player_icon
+        @map[@pos_x][@pos_y] = 'X'
     end
 
     # Checks for map exit at top & bot
@@ -719,6 +730,11 @@ class Route101 < Map
             end
         end
         
+        # Because cliff moves 2 spots down & bottom is always 'L', stops odd scenarios where 'G' moves
+        if direction =='down' && @map[@pos_x - 1][@pos_y] == "L"
+            @saved_variable = 'S'
+        end
+
         # Exit map at top
         direction == 'up' && @pos_x == 1 && (@pos_y == 9 || @pos_y == 10 || @pos_y == 11 || @pos_y == 12) ? exit! : nil
 
@@ -774,7 +790,7 @@ class Route101 < Map
     # Sets specific stuff to happen if time conditions met
     def time_setup
         if @player.route101 == 'first'
-            @map[15][5] = 'O'
+            @map[15][5] = 'prof'
             @map[14][8] = 'B'
             reset_map 0.5
             slowly("H-help me!")
@@ -786,51 +802,51 @@ class Route101 < Map
             reset_map 0.5
             move('up')
             reset_map 0.5
-            @map[15][5] = 'P'
+            @map[15][5] = 'prof'
             @map[14][5] = 'O'
             reset_map 0.5
             @map[15][5] = 'G'
             @map[14][5] = 'O'
-            @map[13][5] = 'P'
+            @map[13][5] = 'prof'
             reset_map 0.5
             @map[14][5] = 'G'
-            @map[13][5] = 'P'
+            @map[13][5] = 'prof'
             @map[12][5] = 'O'
             reset_map 0.5
-            @map[12][5] = 'P'
+            @map[12][5] = 'prof'
             @map[13][5] = 'S'
             @map[11][5] = 'O'
             reset_map 0.5
             @map[12][5] = 'S'
-            @map[11][5] = 'P'
+            @map[11][5] = 'prof'
             @map[11][6] = 'O'
             reset_map 0.5
             @map[11][5] = 'S'
-            @map[11][6] = 'P'
+            @map[11][6] = 'prof'
             @map[11][7] = 'O'
             reset_map 0.5
             @map[11][6] = 'S'
-            @map[11][7] = 'P'
+            @map[11][7] = 'prof'
             @map[11][8] = 'O'
             reset_map 0.5
             @map[11][7] = 'S'
-            @map[11][8] = 'P'
+            @map[11][8] = 'prof'
             @map[12][8] = 'O'
             reset_map 0.5
             @map[11][8] = 'S'
-            @map[12][8] = 'P'
+            @map[12][8] = 'prof'
             @map[13][8] = 'O'
             reset_map 0.5
             @map[12][8] = 'S'
-            @map[13][8] = 'P'
+            @map[13][8] = 'prof'
             @map[13][7] = 'O'
             reset_map 0.5
             @map[13][8] = 'S'
-            @map[13][7] = 'P'
+            @map[13][7] = 'prof'
             @map[13][6] = 'O'
             reset_map 0.5
             @map[13][7] = 'S'
-            @map[13][6] = 'P'
+            @map[13][6] = 'prof'
             @map[13][5] = 'O'
             reset_map 0.5
             slowly("Hello! You over there!\nPlease! Help!")
@@ -849,10 +865,13 @@ end
 
 # require './player.rb'
 # p = Player.new('Nathan', 'male')
+# p.route101 = 'second'
+# # p.profbirchhome = 'second'
+# # Route101.new(p).begin
+
 # p.littleroot = 'third'
+# LittleRoot.new(p, 5,5).begin
+# # require 'colorize'
+# # puts String.colors 
 
 
-# p.littleroot = 'third'
-# Route101.new(p).begin
-# require 'colorize'
-# puts String.colors

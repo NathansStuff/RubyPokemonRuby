@@ -3,7 +3,7 @@
 require './player.rb'
 require './list_of_maps.rb'
 p=Player.new('N','s')
-p.littleroot='second'
+p.littleroot='third'
 Van.new(p).begin
 
 

@@ -66,6 +66,10 @@ class Map
                     print "\u{1F4E6}"
                 when 'couch'
                     print "\u{1F6CB} "
+                when 'lady'
+                    print "\u{1F475}"
+                when 'boy'
+                    print "\u{1F466}"
                 end
             end
             puts ''

@@ -86,18 +86,13 @@ class LittleRoot < Map
     def time_setup
         case @player.littleroot
         when 'first' #Places car, mum animation and forces player to next map
-            @map[7][4] = 'C'
-            @map[7][5] = 'C'
-            @map[7][6] = 'C'
-            @map[8][4] = 'C'
-            @map[8][5] = 'C'
             @map[8][6] = 'C'
             print_map
-            @map[7][8] = 'O'
+            @map[7][8] = 'lady'
             sleep 1
             print_map
             @map[7][8] = 'S'
-            @map[8][8] = 'O'
+            @map[8][8] = 'lady'
             sleep 1
             print_map
             slowly("MOM: #{ @player.name }, we're here, honey!")
@@ -109,12 +104,12 @@ class LittleRoot < Map
             slowly("It has a quaint feel, but it seems to be an easy place to live, don't you think?")
             reset_map
             slowly("And, you get your own room, #{ @player.name }! Let's go inside.")
-            @map[7][8] = 'O'
-            @map[8][8] = @player_icon
+            @map[7][8] = 'lady'
+            @map[8][8] = 'X'
             @map[@pos_x][@pos_y]='S'
             sleep 1
             print_map
-            @map[7][8] = @player_icon
+            @map[7][8] = 'X'
             @map[8][8] = 'S'
             sleep 1
             print_map
@@ -122,9 +117,9 @@ class LittleRoot < Map
             @player.littleroot = 'second' # Never do this speech again
             PlayerHomeHouse.new(@player,'bot').begin
         when 'second' # Trusty little guard guy stops you from leaving
-            @map[2][10] = 'O' 
+            @map[2][10] = 'boy' 
         when 'third' # Trust little guard is a nervous bystander
-            @map[1][13] = 'O'
+            @map[1][13] = 'boy'
         end
     end
 
@@ -135,69 +130,69 @@ class LittleRoot < Map
                 if @pos_x == 1 && (@pos_y == 13 || @pos_y == 14) #If trying to exit at top
                     # Little guy stops you
                     @map[2][10] = 'S'
-                    @map[2][11] = 'O'
+                    @map[2][11] = 'boy'
                     reset_map 0.5
                     @map[2][11] = 'S'
-                    @map[2][12] = 'O'
+                    @map[2][12] = 'boy'
                     reset_map 0.5
                     @map[2][12] = 'S'
-                    @map[2][13] = 'O'
+                    @map[2][13] = 'boy'
                     reset_map 0.5
                     @map[2][13] = 'S'
                     # Top exit is two spots wide, little guy takes appropriate pathing depending on player
                     if @pos_y == 13
-                        @map[2][14] = 'O'
+                        @map[2][14] = 'boy'
                         reset_map(0.5)
                         @map[2][14] = 'S'
-                        @map[1][14] = 'O'
+                        @map[1][14] = 'boy'
                         reset_map 0.5
                         @map[1][14] = 'S'
-                        @map[0][14] = 'O'
+                        @map[0][14] = 'boy'
                         reset_map 0.5
-                        @map[0][14] = 'D'
-                        @map[0][13] = 'O'
+                        @map[0][14] = 'E'
+                        @map[0][13] = 'boy'
                         reset_map 0.5
                         cant_leave_speech 
-                        @map[0][13] = 'D'
-                        @map[0][14] = 'O'
+                        @map[0][13] = 'E'
+                        @map[0][14] = 'boy'
                         reset_map 0.5
-                        @map[0][14] = 'D'
-                        @map[1][14] = 'O'
+                        @map[0][14] = 'E'
+                        @map[1][14] = 'boy'
                         reset_map 0.5
                         @map[1][14] = 'S'
-                        @map[2][14] = 'O'
+                        @map[2][14] = 'boy'
                         reset_map 0.5
                         @map[2][14] = 'S'
 
                     else
-                        @map[1][13] = 'O'
+                        @map[1][13] = 'boy'
                         reset_map 0.5
                         @map[1][13] = 'S'
-                        @map[0][13] = 'O'
+                        @map[0][13] = 'boy'
                         reset_map 0.5
-                        @map[0][13] = 'D'
-                        @map[0][14] = 'O'
+                        @map[0][13] = 'E'
+                        @map[0][14] = 'boy'
                         reset_map 0.5
                         cant_leave_speech
-                        @map[0][14] = 'D'
-                        @map[0][13] = 'O'
+                        @map[0][14] = 'E'
+                        @map[0][13] = 'boy'
                         reset_map 0.5
-                        @map[0][13] = 'D'
-                        @map[1][13] = 'O'
+                        @map[0][13] = 'E'
+                        @map[1][13] = 'boy'
                         reset_map 0.5
                         @map[1][13] = 'S'
                     end
                     # Guy walks back to his guard spot
-                    @map[2][13] = 'O'
+                    @map[2][13] = 'boy'
                     reset_map 0.5
                     @map[2][13] = 'S'
-                    @map[2][12] = 'O'
+                    @map[2][12] = 'boy'
                     reset_map 0.5
                     @map[2][12] = 'S'
-                    @map[2][11] = 'O'
+                    @map[2][11] = 'boy'
                     reset_map 0.5
                     @map[2][11] = 'S'
-                    @map[2][10] = 'O'
+                    @map[2][10] = 'boy'
                 end
             end
         end
@@ -222,6 +217,7 @@ class LittleRoot < Map
         #                                                   player moves into little guy               player moves up past                          player moves into from left
         if @player.littleroot == 'third' && (direction == 'up' && (@pos_x == 2 && @pos_y == 13) || (@pos_x == 1 && @pos_y == 14)) || (direction == 'left' && @pos_x == 1 && @pos_y == 14) 
             slowly("I can hear someone shouting down the\nroad here.")
+            reset_map
             slowly("What should I do? What should we do?\nSomeody has to go help...")
         end
 

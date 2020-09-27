@@ -58,6 +58,8 @@ class Map
                     print '█'.colorize(:yellow)
                 when 'L'
                     print '█'
+                when 'B' 
+                    print '█'.colorize(:blue)
                 end
             end
             puts ''

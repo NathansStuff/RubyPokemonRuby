@@ -14,6 +14,7 @@
 require './maps.rb'
 require 'colorize'
 require './stuff.rb'
+require 'tty-prompt'
 
 class Van < Map
     #Initialises the map
@@ -712,16 +713,133 @@ class Route101 < Map
 
     # Checks for map exit at top & bot
     def move(direction)
+        
         # Exit map at bottom
-        direction == 'down' && @pos_x == 19 && (@pos_y == 11 || @pos_y == 12) ? LittleRoot.new(@player,0,14).begin : nil
+        if direction == 'down' && @pos_x == 19 && (@pos_y == 11 || @pos_y == 12) 
+            if @player.route101 == 'first' # No escape!
+                cant_leave_speech('up')
+            else # Load map
+                LittleRoot.new(@player,0,14).begin
+            end
+        end
+        
         # Exit map at top
         direction == 'up' && @pos_x == 1 && (@pos_y == 9 || @pos_y == 10 || @pos_y == 11 || @pos_y == 12) ? exit! : nil
-    super # Otherwise act as normal
+
+        # Can't go around the bag
+        if @player.route101 == 'first' && direction == 'left' && @pos_y == 8 && (@pos_x == 15 || @pos_x == 16 || @pos_x == 17)
+            cant_leave_speech('right')
+        end
+        
+        # Interact with bag
+        if @player.route101 == 'first'
+            if (direction == 'left' && @pos_x == 14 && @pos_y == 9) || (direction == 'up' && @pos_x == 15 && @pos_y == 8)
+                loop do
+                    pokemon = TTY::Prompt.new.select("Prof. BIRCH is in trouble!\nRelease a POKEMON and rescue him!",%w(TREECKO TORCHIC MUDKIP))
+                    case pokemon
+                    when 'TREECKO'
+                        puts "GRASS POKEMON"
+                        choice = TTY::Prompt.new.select("Do you choose this POKEMON?", %w(YES NO))
+                        if choice == 'YES'
+                            break
+                        else
+                            reset_map
+                        end
+                    when 'TORCHIC'
+                        puts "FIRE POKEMON"
+                        choice = TTY::Prompt.new.select("Do you choose this POKEMON?", %w(YES NO))
+                        if choice == 'YES'
+                            break
+                        else
+                            reset_map
+                        end
+                    when 'MUDKIP'
+                        puts "WATER POKEMON"
+                        choice = TTY::Prompt.new.select("Do you choose this POKEMON?", %w(YES NO))
+                        if choice == 'YES'
+                            break
+                        else
+                            reset_map
+                        end
+                    end
+                end
+            end
+        end
+
+        super # Otherwise act as normal
+    end
+
+    def cant_leave_speech(movement)
+        slowly("Wh-Where are you going?!\nDOn't leave me like this!")
+        move(movement)
+        move(movement)
     end
 
     # Sets specific stuff to happen if time conditions met
     def time_setup
         if @player.route101 == 'first'
+            @map[15][5] = 'O'
+            @map[14][8] = 'B'
+            reset_map 0.5
+            slowly("H-help me!")
+            move('up')
+            reset_map 0.5
+            move('up')
+            reset_map 0.5
+            move('up')
+            reset_map 0.5
+            move('up')
+            reset_map 0.5
+            @map[15][5] = 'P'
+            @map[14][5] = 'O'
+            reset_map 0.5
+            @map[15][5] = 'G'
+            @map[14][5] = 'O'
+            @map[13][5] = 'P'
+            reset_map 0.5
+            @map[14][5] = 'G'
+            @map[13][5] = 'P'
+            @map[12][5] = 'O'
+            reset_map 0.5
+            @map[12][5] = 'P'
+            @map[13][5] = 'S'
+            @map[11][5] = 'O'
+            reset_map 0.5
+            @map[12][5] = 'S'
+            @map[11][5] = 'P'
+            @map[11][6] = 'O'
+            reset_map 0.5
+            @map[11][5] = 'S'
+            @map[11][6] = 'P'
+            @map[11][7] = 'O'
+            reset_map 0.5
+            @map[11][6] = 'S'
+            @map[11][7] = 'P'
+            @map[11][8] = 'O'
+            reset_map 0.5
+            @map[11][7] = 'S'
+            @map[11][8] = 'P'
+            @map[12][8] = 'O'
+            reset_map 0.5
+            @map[11][8] = 'S'
+            @map[12][8] = 'P'
+            @map[13][8] = 'O'
+            reset_map 0.5
+            @map[12][8] = 'S'
+            @map[13][8] = 'P'
+            @map[13][7] = 'O'
+            reset_map 0.5
+            @map[13][8] = 'S'
+            @map[13][7] = 'P'
+            @map[13][6] = 'O'
+            reset_map 0.5
+            @map[13][7] = 'S'
+            @map[13][6] = 'P'
+            @map[13][5] = 'O'
+            reset_map 0.5
+            slowly("Hello! You over there!\nPlease! Help!")
+            reset_map
+            slowly("In my BAG!\nThere's a POKEBALL!")
         end
     end
 
@@ -732,8 +850,6 @@ class Route101 < Map
     end
 
 end
-
-
 
 require './player.rb'
 p = Player.new('Nathan', 'male')

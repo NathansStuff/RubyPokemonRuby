@@ -1,7 +1,7 @@
 class Player
 
     attr_reader :name, :gender, :player_icon, :other_name, :other_gender
-    attr_accessor :littleroot, :playerhomehouse, :playerhomehouseupstairs, :profbirchhome, :profbirchhomeupstairs, :profbirchlab
+    attr_accessor :littleroot, :playerhomehouse, :playerhomehouseupstairs, :profbirchhome, :profbirchhomeupstairs, :profbirchlab, :route101
     def initialize(name, gender)
     @name=name
     @gender=gender

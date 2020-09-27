@@ -4,7 +4,7 @@ require './stuff.rb'
 class Map
     # include ResetMap
 
-    def initialize(name, map, pos_x, pos_y)
+    def initialize(player,name, map, pos_x, pos_y)
     @name=name
     @map=map
     @pos_x=pos_x
@@ -12,6 +12,8 @@ class Map
     @old_x=0
     @old_y=0
     @map[@pos_x][@pos_y]=@player_icon
+    @player=player
+    @player_icon=@player.player_icon
     end
 
     #Clears terminal, prints map according to characters
@@ -21,7 +23,7 @@ class Map
             for letter in row
                 case letter
                 when '`'
-                    print '─'.colorize(:light_blue)
+                    print '──'.colorize(:light_blue)
                 when '|'
                     print '│'.colorize(:light_blue)
                 when '1'
@@ -33,25 +35,25 @@ class Map
                 when '4'
                     print '┘'.colorize(:light_blue)
                 when 'R'
-                    print '█'.colorize(:red)
+                    print "\u{1F4E6}".colorize(:red)
                 when 'S'
-                    print '█'.colorize(:light_black)
+                    print '██'.colorize(:light_black)
                 when 'T'
-                    print '█'.colorize(:green)
+                    print "\u{1F333}".colorize(:green)
                 when 'X'
-                    print 'X'.colorize(:blue)
+                    print "#{@player_icon}"
                 when 'H'
-                    print '█'.colorize(:light_magenta)
+                    print '██'.colorize(:light_magenta)
                 when 'I'
-                    print '█'.colorize(:cyan)
+                    print "\u{1F233}".colorize(:cyan)
                 when 'E'
-                    print ' '
+                    print '  '
                 when 'D'
-                    print ' '
+                    print "\u{1F6AA}".colorize(:light_magenta)
                 when 'C'
-                    print '█'.colorize(:white)
+                    print "\u{1F69A}"
                 when 'O'
-                    print 'O'.colorize(:blue)
+                    print ' O'.colorize(:blue)
                 when 'P'
                     print 'P'.colorize(:blue)
                 when 'G'
@@ -60,6 +62,10 @@ class Map
                     print '█'
                 when 'B' 
                     print '█'.colorize(:blue)
+                when 'box'
+                    print "\u{1F4E6}"
+                when 'couch'
+                    print "\u{1F6CB} "
                 end
             end
             puts ''
@@ -117,7 +123,7 @@ class Map
         end
         
         #Places the player's icon on the map
-        @map[@pos_x][@pos_y] = @player_icon
+        @map[@pos_x][@pos_y] = "X"
         print_map
     end
 

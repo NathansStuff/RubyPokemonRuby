@@ -9,9 +9,11 @@ class Player
     if @gender == 'male'
         @other_gender = 'daughter'
         @other_name = 'May'
+        @player_icon = "\u{1F468}"
     else
         @other_gender = 'son'
         @other_name = 'Terry'
+        @player_icon = "\u{1F469}"
     end
     @littleroot = 'first'
     @playerhomehouse = 'first'
@@ -19,7 +21,6 @@ class Player
     @profbirchhome = 'first'
     @profbirchhomeupstairs = 'first'
     @profbirchlab = 'first'
-    @player_icon = 'X'
     @route101 = 'first'
     end
 

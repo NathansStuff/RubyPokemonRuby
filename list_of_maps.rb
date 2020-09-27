@@ -23,18 +23,18 @@ class Van < Map
         @name='van'
         @map=[
             ['1','`','`','`','`','`','2',],
-            ['|','R','R','R','R','S','|',],
-            ['|','R','S','S','S','S','E',],
-            ['|','R','S','S','S','S','E',],
-            ['|','R','R','R','S','S','E',],
-            ['|','R','R','R','R','S','|',],
+            ['|','box','box','box','couch','S','|',],
+            ['|','box','S','S','S','S','E',],
+            ['|','box','S','S','S','S','E',],
+            ['|','box','box','box','S','S','E',],
+            ['|','box','box','box','box','S','|',],
             ['3','`','`','`','`','`','4',]
             ]
         @pos_x = 2
         @pos_y = 2
-        @player_icon=player.player_icon
+        @player_icon=@player.player_icon
         @saved_variable='S'
-        @map[@pos_x][@pos_y] = 'X'
+        @map[@pos_x][@pos_y] = "X"
     end
 
     #Extends the Map class move direction to load the next map
@@ -78,7 +78,7 @@ class LittleRoot < Map
     @saved_variable='S'
     @player=player
     @player_icon=@player.player_icon
-    @map[@pos_x][@pos_y] = @player_icon
+    @map[@pos_x][@pos_y] = "X"
     end
 
     # If first time, positioning overridden, dialogue and forced exit to playerhousemap
@@ -851,12 +851,12 @@ class Route101 < Map
 
 end
 
-require './player.rb'
-p = Player.new('Nathan', 'male')
+# require './player.rb'
+# p = Player.new('Nathan', 'male')
 # p.littleroot = 'third'
 
 
 # p.littleroot = 'third'
-Route101.new(p).begin
+# Route101.new(p).begin
 # require 'colorize'
 # puts String.colors

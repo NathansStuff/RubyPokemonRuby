@@ -20,6 +20,7 @@ class Player
     @profbirchhomeupstairs = 'first'
     @profbirchlab = 'first'
     @player_icon = 'X'
+    @route101 = 'first'
     end
 
 end

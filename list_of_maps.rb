@@ -790,10 +790,12 @@ class Route101 < Map
     # Sets specific stuff to happen if time conditions met
     def time_setup
         if @player.route101 == 'first'
+            # Set the initial professor and bag
             @map[15][5] = 'prof'
-            @map[14][8] = 'B'
+            @map[14][8] = 'bag'
             reset_map 0.5
             slowly("H-help me!")
+            # Animation of player moving
             move('up')
             reset_map 0.5
             move('up')
@@ -802,52 +804,53 @@ class Route101 < Map
             reset_map 0.5
             move('up')
             reset_map 0.5
-            @map[15][5] = 'prof'
-            @map[14][5] = 'O'
+            # Animation of the professor getting chased
+            @map[15][5] = 'P'
+            @map[14][5] = 'prof'
             reset_map 0.5
             @map[15][5] = 'G'
-            @map[14][5] = 'O'
+            @map[14][5] = 'P'
             @map[13][5] = 'prof'
             reset_map 0.5
             @map[14][5] = 'G'
-            @map[13][5] = 'prof'
-            @map[12][5] = 'O'
-            reset_map 0.5
+            @map[13][5] = 'P'
             @map[12][5] = 'prof'
+            reset_map 0.5
+            @map[12][5] = 'P'
             @map[13][5] = 'S'
-            @map[11][5] = 'O'
+            @map[11][5] = 'prof'
             reset_map 0.5
             @map[12][5] = 'S'
-            @map[11][5] = 'prof'
-            @map[11][6] = 'O'
+            @map[11][5] = 'P'
+            @map[11][6] = 'prof'
             reset_map 0.5
             @map[11][5] = 'S'
-            @map[11][6] = 'prof'
-            @map[11][7] = 'O'
+            @map[11][6] = 'P'
+            @map[11][7] = 'prof'
             reset_map 0.5
             @map[11][6] = 'S'
-            @map[11][7] = 'prof'
-            @map[11][8] = 'O'
+            @map[11][7] = 'P'
+            @map[11][8] = 'prof'
             reset_map 0.5
             @map[11][7] = 'S'
-            @map[11][8] = 'prof'
-            @map[12][8] = 'O'
+            @map[11][8] = 'P'
+            @map[12][8] = 'prof'
             reset_map 0.5
             @map[11][8] = 'S'
-            @map[12][8] = 'prof'
-            @map[13][8] = 'O'
+            @map[12][8] = 'P'
+            @map[13][8] = 'prof'
             reset_map 0.5
             @map[12][8] = 'S'
-            @map[13][8] = 'prof'
-            @map[13][7] = 'O'
+            @map[13][8] = 'P'
+            @map[13][7] = 'prof'
             reset_map 0.5
             @map[13][8] = 'S'
-            @map[13][7] = 'prof'
-            @map[13][6] = 'O'
+            @map[13][7] = 'P'
+            @map[13][6] = 'prof'
             reset_map 0.5
             @map[13][7] = 'S'
-            @map[13][6] = 'prof'
-            @map[13][5] = 'O'
+            @map[13][6] = 'P'
+            @map[13][5] = 'prof'
             reset_map 0.5
             slowly("Hello! You over there!\nPlease! Help!")
             reset_map
@@ -863,14 +866,14 @@ class Route101 < Map
 
 end
 
-# require './player.rb'
-# p = Player.new('Nathan', 'male')
+require './player.rb'
+p = Player.new('Nathan', 'BOY')
 # p.route101 = 'second'
 # # p.profbirchhome = 'second'
 # # Route101.new(p).begin
 
-# p.littleroot = 'third'
-# LittleRoot.new(p, 5,5).begin
+p.littleroot = 'third'
+Route101.new(p).begin
 # # require 'colorize'
 # # puts String.colors 
 

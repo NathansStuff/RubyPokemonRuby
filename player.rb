@@ -6,7 +6,7 @@ class Player
     @name=name
     @gender=gender
     # Prof Birch's kid changes to opposite gender of player
-    if @gender == 'boy'
+    if @gender == 'BOY'
         @other_gender = 'daughter'
         @other_name = 'May'
         @other_icon = "\u{1F467}"

@@ -101,6 +101,8 @@ class Map
                     print "\u{1F9FA}"
                 when 'prof'
                     print "\u{1F468}"
+                when 'bag'
+                    print "\u{1F45C}"
                 end
             end
             puts ''

@@ -11,10 +11,12 @@
 # L = cLiff
 
 ## AWS
-require './maps.rb'
+# require './maps.rb'
 require 'colorize'
 require './stuff.rb'
 require 'tty-prompt'
+require './battle.rb'
+require './pokemon/pokemon.rb'
 
 class Van < Map
     #Initialises the map
@@ -520,7 +522,7 @@ class ProfBirchHomeUpstairs < Map
     def initialize(player)
         @map = [
             ['1','`','D','`','`','`','`','`','`','`','2',],
-            ['|','S','S','S','S','clock','tv','S','H','pc','|',],
+            ['|','S','S','S','S','clock','tv','S','books','pc','|',],
             ['|','S','S','S','S','S','S','S','S','chair','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
             ['|','S','S','S','S','S','S','S','S','S','|',],
@@ -753,7 +755,8 @@ class Route101 < Map
                         puts "GRASS POKEMON"
                         choice = TTY::Prompt.new.select("Do you choose this POKEMON?", %w(YES NO))
                         if choice == 'YES'
-                            break
+                            choice = Treecko.new(5)
+                            battle(choice)
                         else
                             reset_map
                         end
@@ -761,7 +764,8 @@ class Route101 < Map
                         puts "FIRE POKEMON"
                         choice = TTY::Prompt.new.select("Do you choose this POKEMON?", %w(YES NO))
                         if choice == 'YES'
-                            break
+                            choice = Torchic.new(5)
+                            battle(choice)
                         else
                             reset_map
                         end
@@ -769,7 +773,8 @@ class Route101 < Map
                         puts "WATER POKEMON"
                         choice = TTY::Prompt.new.select("Do you choose this POKEMON?", %w(YES NO))
                         if choice == 'YES'
-                            break
+                            choice = Mudkip.new(5)
+                            battle(choice)
                         else
                             reset_map
                         end
@@ -779,6 +784,11 @@ class Route101 < Map
         end
 
         super # Otherwise act as normal
+    end
+
+    def battle(choice)
+        p2 = Poochyena.new(2)
+        Battle.new(choice, p2).begin
     end
 
     def cant_leave_speech(movement)
@@ -868,9 +878,9 @@ end
 
 # require './player.rb'
 # p = Player.new('Nathan', 'BOY')
-# # p.route101 = 'second'
-# # # p.profbirchhome = 'second'
-# # # Route101.new(p).begin
+# # # p.route101 = 'second'
+# # # # p.profbirchhome = 'second'
+# Route101.new(p).begin
 
 # p.littleroot = 'third'
 # Route101.new(p).begin

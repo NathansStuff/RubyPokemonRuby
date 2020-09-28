@@ -79,6 +79,7 @@ def begin_game_dialogue
     slowly("Well, I'll be expecting you later. Come see me in my POKEMON LAB.")
     sleep 2
     Van.new(player).begin
+    
 end
 
 begin_game_dialogue

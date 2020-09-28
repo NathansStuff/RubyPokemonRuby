@@ -866,15 +866,14 @@ class Route101 < Map
 
 end
 
-require './player.rb'
-p = Player.new('Nathan', 'BOY')
-# p.route101 = 'second'
-# # p.profbirchhome = 'second'
-# # Route101.new(p).begin
+# require './player.rb'
+# p = Player.new('Nathan', 'BOY')
+# # p.route101 = 'second'
+# # # p.profbirchhome = 'second'
+# # # Route101.new(p).begin
 
-p.littleroot = 'third'
-Route101.new(p).begin
-# # require 'colorize'
-# # puts String.colors 
-
+# p.littleroot = 'third'
+# Route101.new(p).begin
+# # # require 'colorize'
+# # # puts String.colors 
 

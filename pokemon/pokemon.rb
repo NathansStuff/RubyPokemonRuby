@@ -7,9 +7,9 @@ class Pokemon
         @moves=moves
         @max_hp=20 + @level * 10
         @current_hp=max_hp
-        @defense=2 + @level * 1
+        @defense=2 + @level * 4
         @status=[]
-        @attack_base=@leve
+        @attack_base=@level
     end
 
     def move(action)
@@ -80,4 +80,4 @@ class Mudkip < Pokemon
 end
 
 
-print Poochyena.new(2).name
+# print Mudkip.new(2).name

@@ -1,34 +1,34 @@
 require 'tty-prompt'
 require './stuff.rb'
-require './list_of_maps.rb'
+require './maps/van.rb'
 require './player.rb'
 
 
 def begin_game_dialogue
     prompt=TTY::Prompt.new
-    system('clear')
-    slowly('Hi! Sorry to keep you waiting!')
-    slowly('Welcome to the world of POKEMON!')
-    system('clear')
-    slowly('My name is BIRCH.')
-    slowly('But everyone calls me the POKEMON PROFESSOR.')
-    system('clear')
-    slowly('This is what we call a "POKEMON."')
-    ascii_1
-    slowly('This world is widely inhabited by creatures known as POKEMON.')
-    system('clear')
-    slowly('We humans live alongside POKEMON, at times friendly playmates, and')
-    slowly('at times as cooperative workmates.')
-    slowly('And sometimes, we band together and battle others like us.')
-    system('clear')
-    slowly("But despite out closeness, we don't know everything about POKEMON.")
-    slowly('In fact, there are many, many secrets surrounding POKEMON.')
-    system('clear')
-    slowly("To unravel POKEMON mysteries, I've been undertaking research.")
-    slowly("That's what I do.")
-    system('clear')
-    slowly("And you are?")
-    system('clear')
+    # system('clear')
+    # slowly('Hi! Sorry to keep you waiting!')
+    # slowly('Welcome to the world of POKEMON!')
+    # system('clear')
+    # slowly('My name is BIRCH.')
+    # slowly('But everyone calls me the POKEMON PROFESSOR.')
+    # system('clear')
+    # slowly('This is what we call a "POKEMON."')
+    # ascii_1
+    # slowly('This world is widely inhabited by creatures known as POKEMON.')
+    # system('clear')
+    # slowly('We humans live alongside POKEMON, at times friendly playmates, and')
+    # slowly('at times as cooperative workmates.')
+    # slowly('And sometimes, we band together and battle others like us.')
+    # system('clear')
+    # slowly("But despite out closeness, we don't know everything about POKEMON.")
+    # slowly('In fact, there are many, many secrets surrounding POKEMON.')
+    # system('clear')
+    # slowly("To unravel POKEMON mysteries, I've been undertaking research.")
+    # slowly("That's what I do.")
+    # system('clear')
+    # slowly("And you are?")
+    # system('clear')
     name = ''
     gender = ''
     loop do
@@ -64,20 +64,20 @@ def begin_game_dialogue
         end
     end
     player = Player.new(name, gender)
-    system('clear')
-    slowly('Ah, okay!')
-    slowly("You're #{ player.name } who's moving to my hometown of LITTLEROOT.")
-    system('clear')
-    slowly("I get it now!")
-    slowly("All right, are you ready?")
-    system('clear')
-    slowly("Your very own adventure is about to unfold.")
-    system('clear')
-    slowly("Take courage, and leap into the world of POKEMON where dreams,")
-    slowly("adventure, and friendships await!")
-    system('clear')
-    slowly("Well, I'll be expecting you later. Come see me in my POKEMON LAB.")
-    sleep 2
+    # system('clear')
+    # slowly('Ah, okay!')
+    # slowly("You're #{ player.name } who's moving to my hometown of LITTLEROOT.")
+    # system('clear')
+    # slowly("I get it now!")
+    # slowly("All right, are you ready?")
+    # system('clear')
+    # slowly("Your very own adventure is about to unfold.")
+    # system('clear')
+    # slowly("Take courage, and leap into the world of POKEMON where dreams,")
+    # slowly("adventure, and friendships await!")
+    # system('clear')
+    # slowly("Well, I'll be expecting you later. Come see me in my POKEMON LAB.")
+    # sleep 2
     Van.new(player).begin
     
 end

@@ -101,11 +101,9 @@ def start
         -version        show version information
         '
         exit
-    elsif ARGV.first != ''
-        puts 'Invalid command line argument; please type -a for a list of all valid commands'
-        exit
+    else
+        begin_game_dialogue
     end
-    begin_game_dialogue
 end
 
 start

@@ -4,6 +4,7 @@ require './maps/van.rb'
 require './player.rb'
 
 
+
 def begin_game_dialogue
     prompt=TTY::Prompt.new
     system('clear')
@@ -82,4 +83,29 @@ def begin_game_dialogue
     
 end
 
-begin_game_dialogue
+def start
+    if ARGV.first == '-h' || ARGV.first == 'help'
+        puts 'This game is designed to recreate Pokemon Ruby in Ruby.'
+        puts 'To start the game, please call the game without any arguments'
+        exit
+    elsif ARGV.first == '-v' || ARGV.first == '-version'
+        puts 'This is version 1.0 of Pokemon Ruby in Ruby'
+        exit
+    elsif ARGV.first == '-a' || ARGV.first == '-all'
+        puts '
+        -a              list all command line arguments
+        -all            list all command line arguments
+        -h              help
+        -help           help
+        -v              show version information
+        -version        show version information
+        '
+        exit
+    elsif ARGV.first != ''
+        puts 'Invalid command line argument; please type -a for a list of all valid commands'
+        exit
+    end
+    begin_game_dialogue
+end
+
+start

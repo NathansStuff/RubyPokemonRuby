@@ -100,3 +100,76 @@ The flow chart diagrams for each are below.
 
 ### Battle System
 ![battle system flowchart](docs/battle_flowchart.png)
+
+# Project Management Software
+This project was managed using a [trello board](https://trello.com/b/ADB6Q85d/pokemon-ruby)
+
+# User Interaction
+At the start of the application, the user is presented with some text. As in the game being emulated, at the end of each line of text, the user must interact with the application in order to advance the text. The application will accept any character being pressed as valid input for this stage.
+
+The application guides the player through the creation of a character. First by selecting gender and then a name. Based on the selected gender, a list of prepopulated gender-specific names will appear, which the player can choose or enter their own.
+
+If the user chooses to enter in their own name, a regex expression is used to ensure that only letters and the (.)(,) symbols are used in the creation of their name.
+
+After selecting a name, the user is asked to confirm their selection. If the user selects no, they go back to the start of the character creation loop (which takes place in 'start.rb, lines 34-65).
+
+Once a name is confirmed, the player's name and gender are used as arguments to create a new instance of a player class. 
+
+The creation of a player class is important because it holds key information that is used throughout the application. Their gender is used to create the appropriate player avatar in maps and to determine the name, gender and avatar of Prof. Birch's child in game. Additionally, the player is initialized with a set of variables that each map references to load the appropriate map state when accessed.
+
+After some more text is displayed on the screen, the game loads the 'van' map, passing the player as an argument.
+
+Using the wasd keyboard inputs, the player can move around the map. This is acccomplished by getting printing the map to the screen, getting the desired movement input, checking if it is a valid and/or special location and then moving there. The parent Map class is responsible for dispalying the map, collecting user input, determining if a player can move there and moving the player there and then updating the screen in one big loop.
+
+The child map classes are responsible for implementing additional movement checks before calling these super methods. For example, van.rb lines 25-32 check if the player is moving right and exiting the map before calling the Map parent method with super.
+
+Upon exiting the van, the application loads the littleroot map. Because the player is initialized with a variable, littleroot equal to 'first' (player.rb line 20), after loading the map littleroot.rb lines 44-75 add extra figures to the map (a van) and display the player's mother moving towards them and then dialogue. By updating the map one position at a time and then printing the map, the result is what looks to be animation of the mother moving towards the player. 
+
+These same methods are used throughout the application to create animation effects.
+
+The player then loads their home map, while updating the player's littleroot variable to 'second'. When in the player's home, the player is instructed to go upstairs and is prevented from leaving until they do.
+
+After they go upstairs and come back down, another animation takes place where the player watches some tv and is then instructed to go to Prof. Birch's house next door.
+
+When exiting the house, the littleroot map is loaded. The player can revisit his home, the house next door, the top of the map or the house at the bottom of the map. The player is prevented from leaving via the top of the map with another animation but can freely enter any of the other three options.
+
+When the player enters Prof. Birch's house, another animation takes place and they are instructed to go upstairs and visit the son/daughter (determined by being the opposite of the player's gender). Upstairs, another animation takes place. Now, the player can freely go to littleroot and exit at the top of the map, although they are warned before doing so.
+
+When the player exits littleroot at the top, they load Route101 map and see another animation. They are then prevented from leaving the map at all and must interact with the bag. Once they have done so, they can choose a pokemon to fight with. 
+
+This choice is important, because each pokemon has different moves available to them.
+
+After they have chosen a pokemon, a battle takes place. The player and their opponent's pokemon names, health and levels are displayed. The player can choose from four options - attack, run, bag and pokemon. If any option other then attack is chosen, they will be informed this is not a viable choice and looped back to the options menu.
+
+After they choose attack, depending on what pokemon they chose, the attack options will be presented. Damage is calculated behind the scenes and is only displayed to the player via the health bar and messages is extremely good or bad, such as 'that was super effective!'. Some moves will not do damage but will work behind the scenes to adjust the damage numbers for future attacks, either by increasing their own damage or decreasing the enemy's defense.
+
+The battle will alternate between the player and the enemy AI's turn until one of them has no more health. At this stage, the game will display the appropriate message depending on whether or not the player won. At the end of the message, the game exits.
+
+# Command Line Arguments
+The available command line arguments are:
+
+- -a
+- -all
+- -h 
+- -help
+- -v
+- -version
+
+# Help File
+Installation steps
+Dependencies
+System/Hardware requirements
+Features
+
+# Two tests
+
+# Installation scripts
+
+# Ruby Gems
+Four ruby gems were used in the creation of this application.
+
+- Colorize
+- TTY Prompt
+- Pastel
+- TTY box
+

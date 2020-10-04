@@ -155,21 +155,15 @@ The available command line arguments are:
 - -v
 - -version
 
-# Help File
-Installation steps
-Dependencies
-System/Hardware requirements
-Features
+# Installation Instructions
 
-# Two tests
+Download the application from github at NathansStuff/RubyPokemonRuby
 
-# Installation scripts
+System Requirements: 
+- Absolute minimum
+- Ruby must be installed
 
-# Ruby Gems
-Four ruby gems were used in the creation of this application.
-
-- Colorize
-- TTY Prompt
-- Pastel
-- TTY box
+Installation Guide:
+- In the application directory in terminal, run `bundle install` to install the dependent Gem files.
+- Then you can run it via `./run_app.sh`
 

@@ -45,11 +45,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  colorize
-  pastel
+  colorize (~> 0.8.1)
+  pastel (~> 0.8.0)
   rspec (~> 3.9)
-  tty-box
-  tty-prompt
+  tty-box (~> 0.6.0)
+  tty-prompt (~> 0.22.0)
 
 BUNDLED WITH
    1.17.2
